@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Daniel Barter - what is a manifold</title>
+    <link href="../style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  </head>
+  <body>
+
+      <nav>
+        <a href="../"> HOME </a>
+        <span> / </span>
+        <a href="../CV.html"> CV </a>
+        <span> / </span>
+        <a href="../blog.html"> BLOG </a>
+        <span> / </span>
+        <a href="https://github.com/danielbarter"> GITHUB </a> 
+      </nav>
+
+    <h1 id="what-is-a-manifold">What is a manifold?</h1>
+<p><em>A Manifold is a space on which one can do calculus.</em> This is what I usually say when asked about manifolds. In this post, I want to explain what this phrase means.</p>
+<h3 id="what-is-a-space">What is a space?</h3>
+<p>Most people have some idea what <em>space</em> is. We live inside it after all. That said, it is very hard to give a precise definition of the term <em>space</em>. In mathematics, instead of trying to define space, we just try and describe some of its properties. The first property: <strong>A space has a set whose elements we call points</strong>. For example, we could talk about a space with points <span class="math inline">\(\{ {\rm apples}, {\rm oranges} \}\)</span> or the space with points <span class="math inline">\(\{ z \in \mathbb{C} : \lvert z \lvert = 1 \}\)</span>. The first space may seem a little strange, but the second one should be more familiar. It is the circle, a 1 dimensional space:</p>
+<div class="figure">
+<img src="../img/2016-01-31-circle.PNG" alt />
+
+</div>
+<p>There is not much that you can do mathematically with just a set of points. We need to describe our spaces more precisely. There are many ways to do this. If you are a probability theorist, you could interpret your points as possible outcomes of an experiment and equip the set of points with a probability measure. If you are an algebraic topologist, you could write down a <a href="https://en.wikipedia.org/wiki/Simplicial_set">simplicial set</a> whose connected components are the points in your space. If you like algebraic geometry, you could write down a system of polynomial equations whose solutions are the points in your space. In order to describe spaces on which we can do calculus, we need to introduce <em>observables</em>.</p>
+<h3 id="observables">Observables</h3>
+<p>The primary way in which humans understand the objects around them is by interpreting the light which bounces off them. If you stand still and look at a stationary object, your brain associates a color (which we identify with its frequency as an electromagnetic wave) to each point on the surface of the object. If we think of the surface of our object as a space, then color defines a partial real valued function on this space (it is only a partial function because we can't see the back of the object!) The second property of spaces: <strong>A space has an algebra of observables which are partial functions from the set of points into a <a href="https://en.wikipedia.org/wiki/Field_%28mathematics%29">field</a></strong>. Often the field is just the real numbers. In many branches of mathematics, the set of points is suppressed and all focus is directed at the algebra of observables. It is important to note that every observable is a partial function from points into the real numbers but not every partial function from the points to the real numbers is an observable. Usually observables are required to have nice properties which allow us to study them mathematically. For example, in algebraic geometry, all the observables are required to be polynomial functions and in differential geometry all the observables are required to be smooth functions. We shall always require our observables to be <a href="https://en.wikipedia.org/wiki/Continuous_function">continuious</a>. For this to even make sense, our set of points needs to be equipped with a <a href="https://en.wikipedia.org/wiki/Topological_space">topology</a>. From now on, whenever we talk about the set of points of a space, it comes equipped with a topology and whenever we talk about observables, they are continuous.</p>
+<h3 id="the-sheaf-of-observables">The sheaf of observables?!????</h3>
+<p>Mathematicians often like to invent fancy words when they are talking or writing. These fancy words are what allow us to keep all the mathematics inside our head organized. This is a form of <a href="https://en.wikipedia.org/wiki/Abstraction_%28computer_science%29">abstraction</a>, and it one of the reasons why mathematics seems so formidable to the uninitiated. The sheaf of observables is an example of this. Take a space and write <span class="math inline">\(X\)</span> for the set of points. If <span class="math inline">\(U \subseteq X\)</span> is an open set then we define <span class="math inline">\(\mathcal{O}_X(U)\)</span> to be the algebra of continuous functions <span class="math inline">\(U \to \mathbb{R}\)</span>. We call <span class="math inline">\(\mathcal{O}_X(U)\)</span> the observables defined on <span class="math inline">\(U\)</span>. The gadget <span class="math inline">\(\mathcal{O}_X\)</span> is called the <em>sheaf of observables</em>. It is kind of like a function because it takes open subsets of <span class="math inline">\(X\)</span> to algebras but there is more structure. If <span class="math inline">\(U \subseteq V\)</span> are open sets in <span class="math inline">\(X\)</span>, then we have an algebra homomorphism <span class="math inline">\(\mathcal{O}_X(V) \to \mathcal{O}_X(U)\)</span> defined by restriction. If you want to be fancy, you can say that <span class="math inline">\(\mathcal{O}_X\)</span> is a <a href="https://en.wikipedia.org/wiki/Functor">contravariant functor</a> from the category of open sets in <span class="math inline">\(X\)</span> into the category of commutative algebras.</p>
+<h3 id="manifolds-finally">Manifolds, Finally!</h3>
+<p>Now we can finally explain what a manifold is. Take a space <span class="math inline">\(X\)</span> (we are going to start committing the standard abuse of notation which identifies a manifold with its set of points). We call <span class="math inline">\(X\)</span> an <span class="math inline">\(n\)</span> dimensional manifold if:</p>
+<ol style="list-style-type: decimal">
+<li>each point <span class="math inline">\(x \in X\)</span> has an open neighborhood <span class="math inline">\(x \in U \subseteq X\)</span> with <span class="math inline">\(n\)</span> observables <span class="math inline">\(x_1,\dots,x_n\)</span> such that <span class="math inline">\((x_1,\dots,x_n) : U \to \mathbb{R}^n\)</span> is injective with image an open subset of <span class="math inline">\(\mathbb{R}^n\)</span>. We call <span class="math inline">\(x_1,\dots,x_n\)</span> coordinates on <span class="math inline">\(U\)</span>.</li>
+<li>If <span class="math inline">\(x_1,\dots,x_n\)</span> are coordinates on <span class="math inline">\(U\)</span>, <span class="math inline">\(y_1,\dots,y_n\)</span> are coordinates on <span class="math inline">\(V\)</span> and <span class="math inline">\(U \cap V \not= \emptyset\)</span> then <span class="math inline">\(x_i(y_1,\dots,y_n)\)</span> and <span class="math inline">\(y_j(x_1,\dots,x_n)\)</span> are smooth functions.</li>
+</ol>
+<div class="figure">
+<img src="../img/2016-01-31-changingcoordinates.PNG" alt />
+
+</div>
+<p>If <span class="math inline">\(f:X \to \mathbb{R}\)</span> is a function, then we say that <span class="math inline">\(f\)</span> is smooth if <span class="math inline">\(f(x_1,\dots,x_n) : U \to \mathbb{R}\)</span> is smooth for every choice of coordinate chart. Since changing coordinates is smooth, in order to check that <span class="math inline">\(f\)</span> is smooth, you only need to check that <span class="math inline">\(f(x_1,\dots,x_n)\)</span> is smooth in one set of coordinates around each point. Lets see an example. Take the circle <span class="math inline">\(S^1\)</span> which is depicted above. Write <span class="math inline">\(N = (0,1)\)</span> and <span class="math inline">\(S = (0,-1)\)</span>. Then define <span class="math display">\[\alpha : S^1 \backslash \{ N \} \to (\pi/2,5 \pi/2)\]</span> <span class="math display">\[\beta : S^1 \backslash \{ S \} \to (-\pi/2,3\pi/2)\]</span> to be the functions which take a point on the circle to the corresponding angle. Then <span class="math display">\[\alpha = \beta + 2 \pi\]</span> so <span class="math inline">\(\alpha\)</span> is a smooth function of <span class="math inline">\(\beta\)</span>. In later posts we will see many more examples. We have defined manifolds and seen our first example (the circle), but we still haven't explained why we can do calculus on a manifold. I will explain this in the next post about the tangent bundle.</p>
+
+  </body>
+</html>
