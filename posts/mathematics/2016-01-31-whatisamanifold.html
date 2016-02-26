@@ -2,7 +2,7 @@
 <html>
   <head>
     <title> Daniel Barter - what is a manifold</title>
-    <link href="../style.css" rel="stylesheet">
+    <link href="../../style.css" rel="stylesheet">
 
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
@@ -10,11 +10,11 @@
   <body>
 
       <nav>
-        <a href="../"> HOME </a>
+        <a href="../../"> HOME </a>
         <span> / </span>
-        <a href="../CV.html"> CV </a>
+        <a href="../../CV.html"> CV </a>
         <span> / </span>
-        <a href="../blog.html"> BLOG </a>
+        <a href="../../blog.html"> BLOG </a>
         <span> / </span>
         <a href="https://github.com/danielbarter"> GITHUB </a> 
       </nav>
@@ -24,7 +24,7 @@
 <h3 id="what-is-a-space">What is a space?</h3>
 <p>Most people have some idea what <em>space</em> is. We live inside it after all. That said, it is very hard to give a precise definition of the term <em>space</em>. In mathematics, instead of trying to define space, we just try and describe some of its properties. The first property: <strong>A space has a set whose elements we call points</strong>. For example, we could talk about a space with points <span class="math inline">\(\{ {\rm apples}, {\rm oranges} \}\)</span> or the space with points <span class="math inline">\(\{ z \in \mathbb{C} : \lvert z \lvert = 1 \}\)</span>. The first space may seem a little strange, but the second one should be more familiar. It is the circle, a 1 dimensional space:</p>
 <div class="figure">
-<img src="../img/2016-01-31-circle.PNG" alt />
+<img src="../../img/2016-01-31-circle.PNG" alt />
 
 </div>
 <p>There is not much that you can do mathematically with just a set of points. We need to describe our spaces more precisely. There are many ways to do this. If you are a probability theorist, you could interpret your points as possible outcomes of an experiment and equip the set of points with a probability measure. If you are an algebraic topologist, you could write down a <a href="https://en.wikipedia.org/wiki/Simplicial_set">simplicial set</a> whose connected components are the points in your space. If you like algebraic geometry, you could write down a system of polynomial equations whose solutions are the points in your space. In order to describe spaces on which we can do calculus, we need to introduce <em>observables</em>.</p>
@@ -39,7 +39,7 @@
 <li>If <span class="math inline">\(x_1,\dots,x_n\)</span> are coordinates on <span class="math inline">\(U\)</span>, <span class="math inline">\(y_1,\dots,y_n\)</span> are coordinates on <span class="math inline">\(V\)</span> and <span class="math inline">\(U \cap V \not= \emptyset\)</span> then <span class="math inline">\(x_i(y_1,\dots,y_n)\)</span> and <span class="math inline">\(y_j(x_1,\dots,x_n)\)</span> are smooth functions.</li>
 </ol>
 <div class="figure">
-<img src="../img/2016-01-31-changingcoordinates.PNG" alt />
+<img src="../../img/2016-01-31-changingcoordinates.PNG" alt />
 
 </div>
 <p>If <span class="math inline">\(f:X \to \mathbb{R}\)</span> is a function, then we say that <span class="math inline">\(f\)</span> is smooth if <span class="math inline">\(f(x_1,\dots,x_n) : U \to \mathbb{R}\)</span> is smooth for every choice of coordinate chart. Since changing coordinates is smooth, in order to check that <span class="math inline">\(f\)</span> is smooth, you only need to check that <span class="math inline">\(f(x_1,\dots,x_n)\)</span> is smooth in one set of coordinates around each point. We can define a smooth map <span class="math inline">\(F : X \to Y\)</span> between manifolds. For each coordinate chart <span class="math inline">\(V \subseteq Y\)</span> and each coordinate chart <span class="math inline">\(U \subseteq F^{-1}(V)\)</span>, <span class="math inline">\(F : U \to V\)</span> is smooth in coordinates.</p>
@@ -48,7 +48,8 @@
 <ol style="list-style-type: decimal">
 <li>Take the circle <span class="math inline">\(S^1\)</span> which is depicted above. Write <span class="math inline">\(N = (0,1)\)</span> and <span class="math inline">\(S = (0,-1)\)</span>. Then define <span class="math display">\[\alpha : S^1 \backslash \{ N \} \to (\pi/2,5 \pi/2)\]</span> <span class="math display">\[\beta : S^1 \backslash \{ S \} \to (-\pi/2,3\pi/2)\]</span> to be the functions which take a point on the circle to the corresponding angle. Then <span class="math display">\[\alpha = \beta + 2 \pi\]</span> so <span class="math inline">\(\alpha\)</span> is a smooth function of <span class="math inline">\(\beta\)</span>.</li>
 <li>Let <span class="math inline">\(V\)</span> be a vector space over <span class="math inline">\(\mathbb{R}\)</span>. Choose a basis <span class="math inline">\(x_1,\dots,x_n\)</span> for <span class="math inline">\(V^*\)</span>. Then <span class="math inline">\(x_1,\dots,x_n\)</span> is a coordinate chart which covers <span class="math inline">\(V\)</span>. We call <span class="math inline">\(\{x_i\}\)</span> a linear coordinate chart.</li>
-<li>Let <span class="math inline">\(V\)</span> be a 3-dimensional vector space and let <span class="math inline">\(\mathbb{P}(V)\)</span> be the set of lines in <span class="math inline">\(V\)</span> which pass through the origin. Let <span class="math inline">\(X_0,X_1,X_2\)</span> be a basis for <span class="math inline">\(V^*\)</span>. The functions <span class="math inline">\(X_i\)</span> are not well defined on <span class="math inline">\(\mathbb{P}(V)\)</span>, but the ratios <span class="math inline">\(X_i/X_j\)</span> are. The functions <span class="math inline">\(X_1/X_0, X_2/X_0\)</span> are a coordinate chart on <span class="math inline">\(\{L : X_0(L) \not= 0 \}\)</span>. Note that even though <span class="math inline">\(X_0\)</span> is not a well defined function on <span class="math inline">\(\mathbb{P}(V)\)</span>, the condition <span class="math inline">\(X_0(L) = 0\)</span> is well defined. Similarly, <span class="math inline">\(X_0/X_1, X_2/X_1\)</span> are coordinates on <span class="math inline">\(\{ L : X_1(L) \not= 0\}\)</span> and <span class="math inline">\(X_0/X_2, X_1/X_2\)</span> are coordinates on <span class="math inline">\(\{L : X_2(L) \not= 0 \}\)</span>. Therefore we can cover <span class="math inline">\(\mathbb{P}(V)\)</span> with three coordinate charts. Changing coordinates is easy: <span class="math display">\[ X_i/X_j = \frac{1}{X_j/X_i}\]</span> <img src="../img/2016-01-31-projectivespace.PNG" alt /></li>
+<li>Let <span class="math inline">\(V\)</span> be a 3-dimensional vector space and let <span class="math inline">\(\mathbb{P}(V)\)</span> be the set of lines in <span class="math inline">\(V\)</span> which pass through the origin. Let <span class="math inline">\(X_0,X_1,X_2\)</span> be a basis for <span class="math inline">\(V^*\)</span>. The functions <span class="math inline">\(X_i\)</span> are not well defined on <span class="math inline">\(\mathbb{P}(V)\)</span>, but the ratios <span class="math inline">\(X_i/X_j\)</span> are. The functions <span class="math inline">\(X_1/X_0, X_2/X_0\)</span> are a coordinate chart on <span class="math inline">\(\{L : X_0(L) \not= 0 \}\)</span>. Note that even though <span class="math inline">\(X_0\)</span> is not a well defined function on <span class="math inline">\(\mathbb{P}(V)\)</span>, the condition <span class="math inline">\(X_0(L) = 0\)</span> is well defined. Similarly, <span class="math inline">\(X_0/X_1, X_2/X_1\)</span> are coordinates on <span class="math inline">\(\{ L : X_1(L) \not= 0\}\)</span> and <span class="math inline">\(X_0/X_2, X_1/X_2\)</span> are coordinates on <span class="math inline">\(\{L : X_2(L) \not= 0 \}\)</span>. Therefore we can cover <span class="math inline">\(\mathbb{P}(V)\)</span> with three coordinate charts. Changing coordinates is easy: <span class="math display">\[ X_i/X_j = \frac{1}{X_j/X_i}\]</span> <img src="../../img/2016-01-31-projectivespace.PNG" alt /></li>
+<li>Define <span class="math inline">\({\rm GL}_r(\mathbb{R})\)</span> to be the set of <span class="math inline">\(r \times r\)</span> invertible matricies. A matrix is invertible iff its determinant is nonzero, therefore <span class="math inline">\({\rm GL}_r(\mathbb{R}) \subseteq {\rm Mat}_{r \times r}(\mathbb{R}) \cong \mathbb{R}^{r^2}\)</span> is an open subset. We have a coordinate chart on <span class="math inline">\({\rm GL}_r(\mathbb{R})\)</span> given by the restriction of the matrix coefficients.</li>
 </ol>
 <p>In later posts we will see many more examples. We have defined manifolds and seen our first examples (the circle, euclidean space and the projective plane), but we still haven't explained why we can do calculus on a manifold. We will start to see why in the next post about tangent spaces.</p>
 <h3 id="exercises">Exercises</h3>
