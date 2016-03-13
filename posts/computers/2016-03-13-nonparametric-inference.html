@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Daniel Barter - non parametric inference</title>
+    <link href="../../style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  </head>
+  <body>
+
+      <nav>
+        <a href="../../"> HOME </a>
+        <span> / </span>
+        <a href="../../CV.html"> CV </a>
+        <span> / </span>
+        <a href="../../blog.html"> BLOG </a>
+        <span> / </span>
+        <a href="https://github.com/danielbarter"> GITHUB </a> 
+      </nav>
+
+    <h1 id="non-parametric-inference">Non Parametric Inference</h1>
+<p>Suppose that we have a data set <span class="math inline">\((x_i) \in \mathbb{R}^n\)</span> produced from <span class="math inline">\(n\)</span> independent repetitions of an experiment. The mathematical model for this situation is <span class="math inline">\(n\)</span> independent identically distributed random variables <span class="math inline">\(X_1,\dots,X_n \sim F\)</span> for some <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> <span class="math inline">\(F\)</span>. What can we learn about <span class="math inline">\(F\)</span>? We shall approach this problem from a frequentest perspective, so <span class="math inline">\(F\)</span> is some fixed unknown cumulative distribution function. Everything we are going to say can be found in the wonderful book <a href="http://www.stat.cmu.edu/~larry/all-of-nonpar/">All of Non Parametric Statistics</a> by Wasserman.</p>
+<h3 id="the-empirical-distribution-function">The Empirical Distribution Function</h3>
+<p>The most important random object in this setting is the <strong>empirical distribution function</strong>: <span class="math display">\[\widehat{F}_n(x) = \frac{1}{n} \sum_{i=1}^n \; {\bf 1}_{X_i \leq x}\]</span> It is the step function which jumps up <span class="math inline">\(1/n\)</span> whenever <span class="math inline">\(x\)</span> crosses one of the <span class="math inline">\(x_i\)</span> in our data set. The importance of the empirical distribution function stems from the <a href="https://en.wikipedia.org/wiki/Glivenko%E2%80%93Cantelli_theorem">Glivenko-Cantelli theorem</a>, which says that <span class="math display">\[\sup_{x} \lvert \widehat{F}_n(x) - F(x) \lvert \; \xrightarrow{P} \; 0\]</span> The <span class="math inline">\(P\)</span> stands for convergence in probability. Intuitively, this says that if the sample size <span class="math inline">\(n\)</span> is large, the probability that <span class="math inline">\(\widehat{F}_n\)</span> and <span class="math inline">\(F\)</span> are &quot;far apart&quot; is small. This intuition can be quantified as follows: Define <span class="math display">\[ L(x) = \widehat{F}_n(x) - \epsilon_n \qquad U(x) = \widehat{F}_n(x) + \epsilon_n 
+\qquad 
+\epsilon_n = 
+\sqrt{\frac{1}{2n}\log \left( \frac{2}{\alpha} \right) }.\]</span> Then the <a href="https://en.wikipedia.org/wiki/Dvoretzky%E2%80%93Kiefer%E2%80%93Wolfowitz_inequality">Dvoretzky-Kiefer-Wolfowitz inequality</a> implies that <span class="math display">\[ {\bf P}(L(x) \leq F(x) \leq U(x) \text{ for all $x$}) \geq 1 - \alpha. \]</span> The theory is nice, but the best thing is to see it work:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> numpy
+<span class="im">import</span> scipy.stats
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> pyplot
+<span class="op">%</span>matplotlib inline
+
+mu, sig <span class="op">=</span> <span class="dv">163</span>, <span class="fl">7.3</span>
+distrubution <span class="op">=</span> scipy.stats.norm(mu, sig)
+
+sample_size <span class="op">=</span> <span class="dv">1000</span>
+bin_size <span class="op">=</span> <span class="dv">10</span>
+num_bins <span class="op">=</span> sample_size <span class="op">//</span> bin_size
+sample <span class="op">=</span> distrubution.rvs(sample_size)
+
+pyplot.hist(sample, bins <span class="op">=</span> num_bins, normed <span class="op">=</span> <span class="va">True</span>, cumulative <span class="op">=</span> <span class="va">True</span>)
+<span class="va">None</span></code></pre></div>
+<p>This python code should be run inside a <a href="http://jupyter.org/">Jupyter notebook</a>. It takes 1000 independent samples from a normal distribution with mean 163 and standard deviation 7.3. It then plots the empirical distribution function as a histogram. The resulting graph looks very similar to the the cumulative distribution function for <span class="math inline">\({\rm N}(163,7.3)\)</span>.</p>
+<h3 id="plug-in-estimators">Plug In Estimators</h3>
+<p>Suppose that <span class="math inline">\(\theta = \int_{\mathbb{R}} a(x) d F(x)\)</span> is some statistic we are interested in. The corresponding <strong>plug in estimator</strong> is defined to be <span class="math display">\[\widehat{\theta}_n = \int_{\mathbb{R}} a(x) d \widehat{F}_n(x) = \frac{1}{n} 
+\sum_{i=1}^n a(X_i)\]</span> The <a href="https://en.wikipedia.org/wiki/Law_of_large_numbers">weak law of large numbers</a> tells us that <span class="math inline">\(\widehat{\theta}_n\)</span> converges in probability to <span class="math inline">\(\theta\)</span>. We say that <span class="math inline">\(\widehat{\theta}_n\)</span> is a <strong>consistent estimator</strong> This says that if <span class="math inline">\(n\)</span> is large, the probability of <span class="math inline">\(\widehat{\theta}_n\)</span> and <span class="math inline">\(\theta\)</span> being far apart is small. We can produce a confidence interval using the <a href="https://en.wikipedia.org/wiki/Central_limit_theorem">central limit theorem</a>. The central limit theorem says that <span class="math display">\[\frac{\widehat{\theta}_n - \theta}{\sqrt{{\bf V}_F(\widehat{\theta}_n)}}
+\xrightarrow{D} N(0,1)\]</span> The <span class="math inline">\(D\)</span> stands for convergence in distribution. As long as <span class="math inline">\(n\)</span> is large, then <span class="math display">\[{\bf P} \left(- \epsilon \leq \frac{\widehat{\theta}_n - \theta}{\sqrt{{\bf
+V}_F(\widehat{\theta}_n)}} \leq \epsilon \right) \thickapprox {\bf P}(-\epsilon \leq
+Z \leq \epsilon) \qquad Z \sim N(0,1)\]</span> There is a problem: The value <span class="math inline">\({\bf V}_F(\widehat{\theta}_n)\)</span> depends on the distribution <span class="math inline">\(F\)</span>, which is unknown to us.</p>
+<h3 id="the-bootstrap">The Bootstrap</h3>
+<p>The Bootstrap is a sneaky way to estimate the value <span class="math inline">\({\bf V}_F(\widehat{\theta}_n)\)</span>. Suppose that we have our sample <span class="math inline">\((x_i) \in \mathbb{R}^n\)</span>. The empirical distribution <span class="math inline">\(\widehat{F}_n\)</span> puts mass <span class="math inline">\(1/n\)</span> at each data point <span class="math inline">\(x_i\)</span>. The trick is to estimate <span class="math inline">\({\bf V}_{F}(\widehat{\theta}_n)\)</span> with <span class="math inline">\({\bf V}_{\widehat{F}_n}(\widehat{\theta}_n)\)</span> which is computed as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Produce a <span class="math inline">\(h \times n\)</span> array sampled uniformly at random from <span class="math inline">\((x_i)\)</span>.</li>
+<li>Apply <span class="math inline">\(a\)</span> to every entry, sum up the rows and divide them by <span class="math inline">\(n\)</span>.</li>
+<li>Compute the variance of the resulting vector in <span class="math inline">\(\mathbb{R}^h\)</span>.</li>
+</ol>
+<p>If we make <span class="math inline">\(h\)</span> very large, the weak law of large numbers tells us that the result is going to be very close to <span class="math inline">\({\bf V}_{\widehat{F}_n}(\widehat{\theta}_n)\)</span>.</p>
+
+  </body>
+</html>
