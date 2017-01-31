@@ -138,7 +138,8 @@ buildKleeneMachine machine <span class="fu">=</span> <span class="kw">do</span> 
 wordRegex w <span class="fu">=</span> mconcat (<span class="dt">Atom</span> <span class="fu">&lt;$&gt;</span><span class="ot"> w ::</span> [<span class="dt">Regex</span>])
 
 red <span class="fu">=</span> wordRegex <span class="st">&quot;red&quot;</span>
-blue <span class="fu">=</span> wordRegex <span class="st">&quot;blue&quot;</span></code></pre></div>
+blue <span class="fu">=</span> wordRegex <span class="st">&quot;blue&quot;</span>
+redblue <span class="fu">=</span> red <span class="ot">`mappend`</span> blue</code></pre></div>
 <p>In the REPL we have</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> useRegex redblue <span class="st">&quot;redbluered&quot;</span>
 (<span class="dt">Right</span> <span class="st">&quot;redblue&quot;</span>,<span class="st">&quot;red&quot;</span>)
