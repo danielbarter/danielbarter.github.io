@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Daniel Barter - Regular expressions in Haskell</title>
+    <link href="../../style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  </head>
+  <body>
+
+      <nav>
+        <a href="../../"> HOME </a>
+        <span> / </span>
+        <a href="../../CV.html"> CV </a>
+        <span> / </span>
+        <a href="../../blog.html"> BLOG </a>
+        <span> / </span>
+        <a href="https://github.com/danielbarter"> GITHUB </a> 
+      </nav>
+
+    <h1 id="regular-expressions-in-haskell">Regular expressions in Haskell</h1>
+<p>If you are writing a piece of software which needs to process text, <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a> are a useful tool. There are many mature regex libraries in the wild, but I thought it would be a fun exercise to implement some basic regex functionality in Haskell.</p>
+<h3 id="setting-up-the-workspace">Setting up the workspace</h3>
+<p>Before we write any code, we need to set up a workspace. We shall use the <a href="https://docs.haskellstack.org/en/stable/README/">stack build system</a>. First open a shell and run</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stack</span> new hs-regex protolude
+<span class="kw">cd</span> ./hs-regex</code></pre></div>
+<p><a href="https://github.com/sdiehl/protolude">Protolude</a> is a minimal Haskell prelude which I like using. We are going to be using the <a href="https://hackage.haskell.org/package/vector">vector</a> and <a href="https://hackage.haskell.org/package/text">text</a> libraries, so in <code>hs-regex.cabal</code>, edit the <code>library</code> section so it looks like</p>
+<pre><code>library
+  hs-source-dirs:      src
+  ghc-options:         -Wall
+  exposed-modules:     Lib
+                     , Regex
+  other-modules:       Lib.Prelude
+  build-depends:       base &gt;= 4.7 &amp;&amp; &lt; 5
+                     , protolude &gt;= 0.1.6 &amp;&amp; &lt; 0.2
+                     , vector &gt;= 0.1
+                     , text &gt;= 1.2
+  default-language:    Haskell2010
+  default-extensions:  OverloadedStrings, NoImplicitPrelude, OverloadedLists</code></pre>
+<p>Now we are ready to start writing <code>./src/Regex.hs</code>.</p>
+<h3 id="the-code">the Code</h3>
+<p>First we need to declare the module and import some libraries.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">module</span> <span class="dt">Regex</span> <span class="kw">where</span>
+
+<span class="kw">import </span><span class="dt">Lib.Prelude</span>
+<span class="kw">import qualified</span> <span class="dt">Data.Vector</span> <span class="kw">as</span> <span class="dt">V</span>
+<span class="kw">import qualified</span> <span class="dt">Data.Text</span> <span class="kw">as</span> <span class="dt">T</span></code></pre></div>
+<p>Importing <code>Lib.Prelude</code> brings protolude into the module namespace. Now lets define the syntax tree for our regular expressions:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Regex</span> <span class="fu">=</span> <span class="dt">Empty</span>                <span class="co">-- matches empty string</span>
+           <span class="fu">|</span> <span class="dt">Atom</span> <span class="dt">Char</span>            <span class="co">-- matches a single character</span>
+           <span class="fu">|</span> <span class="dt">Not</span> <span class="dt">Char</span>             <span class="co">-- matches any other character</span>
+           <span class="fu">|</span> <span class="dt">Union</span> <span class="dt">Regex</span> <span class="dt">Regex</span>    <span class="co">-- matches first regex OR second regex</span>
+           <span class="fu">|</span> <span class="dt">Concat</span> <span class="dt">Regex</span> <span class="dt">Regex</span>   <span class="co">-- matches first regex THEN second regex</span>
+           <span class="fu">|</span> <span class="dt">Kleene</span> <span class="dt">Regex</span>         <span class="co">-- matches zero or more occurrences of regex</span></code></pre></div>
+<p>In order to keep things short, we are sticking to a pretty small set of regular expression constructors. Now that we have specified our regular expressions, we need to decide what we want to do with them. Often, regular expressions are used for searching, but that is a lot to tackle at once. Instead, let's use our regular expressions to split of a matching sequence of characters from the start of the character stream. If there is no match, we need to return an error:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">RegexError</span> <span class="fu">=</span> <span class="dt">UnexpectedCharacter</span> <span class="dt">Char</span>
+                <span class="fu">|</span> <span class="dt">StreamEmpty</span>
+                <span class="kw">deriving</span> <span class="dt">Show</span></code></pre></div>
+<p>We want to define a function</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">useRegex ::</span> <span class="dt">Regex</span> <span class="ot">-&gt;</span> <span class="dt">Text</span> <span class="ot">-&gt;</span> (<span class="dt">Either</span> <span class="dt">RegexError</span> (<span class="dt">V.Vector</span> <span class="dt">Char</span>),<span class="dt">Text</span>)</code></pre></div>
+<p>This is exactly what the state monad is designed for. We can fill in the definition for <code>useRegex</code> as follows:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">RegexMachine</span> m <span class="fu">=</span> <span class="dt">StateT</span> <span class="dt">Text</span> m
+
+<span class="ot">runRegexMachine ::</span> <span class="dt">RegexMachine</span> m a <span class="ot">-&gt;</span> <span class="dt">Text</span> <span class="ot">-&gt;</span> m (a, <span class="dt">Text</span>)
+runRegexMachine <span class="fu">=</span> runStateT
+
+<span class="ot">runRegexMachineIdentity ::</span> <span class="dt">RegexMachine</span> <span class="dt">Identity</span> a <span class="ot">-&gt;</span> <span class="dt">Text</span> <span class="ot">-&gt;</span> (a, <span class="dt">Text</span>)
+runRegexMachineIdentity machine text <span class="fu">=</span> runIdentity <span class="fu">$</span> runRegexMachine machine text
+
+<span class="ot">useRegex ::</span> <span class="dt">Regex</span> <span class="ot">-&gt;</span> <span class="dt">Text</span> <span class="ot">-&gt;</span> (<span class="dt">Either</span> <span class="dt">RegexError</span> (<span class="dt">V.Vector</span> <span class="dt">Char</span>),<span class="dt">Text</span>)
+useRegex regex <span class="fu">=</span> runRegexMachineIdentity <span class="fu">$</span> buildRegexMachine regex
+
+<span class="ot">useRegexIO ::</span> <span class="dt">Regex</span> <span class="ot">-&gt;</span> <span class="dt">Text</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">Either</span> <span class="dt">RegexError</span> (<span class="dt">V.Vector</span> <span class="dt">Char</span>),<span class="dt">Text</span>)
+useRegexIO regex <span class="fu">=</span> runRegexMachine <span class="fu">$</span> buildRegexMachine regex
+
+<span class="ot">buildRegexMachine ::</span> (<span class="dt">Monad</span> m) <span class="ot">=&gt;</span> <span class="dt">Regex</span> <span class="ot">-&gt;</span> <span class="dt">RegexMachine</span> m (<span class="dt">Either</span> <span class="dt">RegexError</span> (<span class="dt">V.Vector</span> <span class="dt">Char</span>))</code></pre></div>
+<p>We define <code>RegexMachine</code> using the <code>StateT</code> monad transformer because then we can also construct <code>useRegexIO</code> which lets us use our regular expressions on values with type <code>IO Text</code>. Now we need to fill in the definition for <code>buildRegexMachine</code>. First we have the <code>Empty</code> constructor:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine <span class="dt">Empty</span> <span class="fu">=</span> return <span class="fu">$</span> <span class="dt">Right</span> []</code></pre></div>
+<p>The <code>Empty</code> regex matches the empty string, so we return nothing and consume no characters.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine (<span class="dt">Atom</span> x) <span class="fu">=</span> <span class="kw">do</span> s <span class="ot">&lt;-</span> get
+                                <span class="kw">let</span> split <span class="fu">=</span> T.uncons s
+                                <span class="kw">case</span> split <span class="kw">of</span>
+                                  <span class="dt">Just</span> (c,rest) <span class="ot">-&gt;</span> <span class="kw">if</span> c <span class="fu">==</span> x <span class="kw">then</span> (put rest) <span class="fu">&gt;&gt;</span> (return <span class="fu">$</span> <span class="dt">Right</span> [c])
+                                                             <span class="kw">else</span> return <span class="fu">$</span> <span class="dt">Left</span> <span class="fu">$</span> <span class="dt">UnexpectedCharacter</span> c
+                                  <span class="dt">Nothing</span>       <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">Left</span> <span class="dt">StreamEmpty</span></code></pre></div>
+<p>The <code>Atom x</code> regex matches a single character, so we get the character stream and pull of the head. If it matches, we consume the character from the stream and return the head. Otherwise we return an <code>UnexpectedCharacter</code> error. The other case occurs when the stream is empty. In that case, we return a <code>StreamEmpty</code> error.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine (<span class="dt">Not</span> x) <span class="fu">=</span> <span class="kw">do</span> s <span class="ot">&lt;-</span> get
+                               <span class="kw">let</span> split <span class="fu">=</span> T.uncons s
+                               <span class="kw">case</span> split <span class="kw">of</span>
+                                 <span class="dt">Just</span> (c,rest) <span class="ot">-&gt;</span> <span class="kw">if</span> c <span class="fu">==</span> x <span class="kw">then</span> return <span class="fu">$</span> <span class="dt">Left</span> <span class="fu">$</span> <span class="dt">UnexpectedCharacter</span> c
+                                                            <span class="kw">else</span> (put rest) <span class="fu">&gt;&gt;</span> (return <span class="fu">$</span> <span class="dt">Right</span> [c])
+                                 <span class="dt">Nothing</span> <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">Left</span> <span class="dt">StreamEmpty</span></code></pre></div>
+<p>The <code>Not x</code> regex is very similar to the <code>Atom x</code> regex.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine (<span class="dt">Union</span> regex1 regex2) <span class="fu">=</span> <span class="kw">do</span> backup  <span class="ot">&lt;-</span> get
+                                             output1 <span class="ot">&lt;-</span> machine1
+                                             <span class="kw">case</span> output1 <span class="kw">of</span>
+                                               <span class="dt">Left</span> _  <span class="ot">-&gt;</span> <span class="kw">do</span> put backup
+                                                             output2 <span class="ot">&lt;-</span> machine2
+                                                             <span class="kw">case</span> output2 <span class="kw">of</span>
+                                                               <span class="dt">Left</span> e  <span class="ot">-&gt;</span> (put backup) <span class="fu">&gt;&gt;</span> (return <span class="fu">$</span> <span class="dt">Left</span> e)
+                                                               <span class="dt">Right</span> v <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">Right</span> v
+                                               <span class="dt">Right</span> w <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">Right</span> w
+  <span class="kw">where</span> machine1 <span class="fu">=</span> buildRegexMachine regex1
+        machine2 <span class="fu">=</span> buildRegexMachine regex2</code></pre></div>
+<p>The code the <code>Union regex1 regex2</code> regex is a little more complicated. We try the first regex. If it fails, we need to roll back the stream and try the second.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine ( <span class="dt">Concat</span> regex1 regex2) <span class="fu">=</span> <span class="kw">do</span> backup <span class="ot">&lt;-</span> get
+                                               output1 <span class="ot">&lt;-</span> machine1
+                                               <span class="kw">case</span> output1 <span class="kw">of</span>
+                                                 <span class="dt">Left</span> e  <span class="ot">-&gt;</span> (put backup) <span class="fu">&gt;&gt;</span> (return <span class="fu">$</span> <span class="dt">Left</span> e)
+                                                 <span class="dt">Right</span> v <span class="ot">-&gt;</span> <span class="kw">do</span> output2 <span class="ot">&lt;-</span> machine2
+                                                               <span class="kw">case</span> output2 <span class="kw">of</span>
+                                                                 <span class="dt">Left</span> f <span class="ot">-&gt;</span> (put backup) <span class="fu">&gt;&gt;</span> (return <span class="fu">$</span> <span class="dt">Left</span> f)
+                                                                 <span class="dt">Right</span> w <span class="ot">-&gt;</span> return <span class="fu">$</span> <span class="dt">Right</span> (v <span class="fu">V.++</span> w)
+  <span class="kw">where</span> machine1 <span class="fu">=</span> buildRegexMachine regex1
+        machine2 <span class="fu">=</span> buildRegexMachine regex2</code></pre></div>
+<p>For <code>Concat regex1 regex2</code>, we try and match both regexes in order. If at any point we fail, we need to revert the stream and return the error.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">buildRegexMachine (<span class="dt">Kleene</span> regex) <span class="fu">=</span> <span class="dt">Right</span> <span class="fu">&lt;$&gt;</span> (buildKleeneMachine machine)
+  <span class="kw">where</span> machine <span class="fu">=</span> buildRegexMachine regex
+
+<span class="co">-- a kleene machine can't fail</span>
+<span class="ot">buildKleeneMachine ::</span> (<span class="dt">Monad</span> m) <span class="ot">=&gt;</span> <span class="dt">RegexMachine</span> m (<span class="dt">Either</span> <span class="dt">RegexError</span> (<span class="dt">V.Vector</span> <span class="dt">Char</span>)) <span class="ot">-&gt;</span> <span class="dt">RegexMachine</span> m (<span class="dt">V.Vector</span> <span class="dt">Char</span>)
+buildKleeneMachine machine <span class="fu">=</span> <span class="kw">do</span> output <span class="ot">&lt;-</span> machine
+                                <span class="kw">case</span> output <span class="kw">of</span>
+                                  <span class="dt">Left</span> _  <span class="ot">-&gt;</span> return []
+                                  <span class="dt">Right</span> v <span class="ot">-&gt;</span> <span class="kw">do</span> vs <span class="ot">&lt;-</span> buildKleeneMachine machine
+                                                return (v <span class="fu">V.++</span> vs)</code></pre></div>
+<p>Since <code>Kleene regex</code> can't fail, we deviate slightly from the above pattern. That completes the definition of <code>buildRegexMachine</code>. We can also make <code>Regex</code> an instance of some type classes so we can use some generic functions:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="dt">Monoid</span> <span class="dt">Regex</span> <span class="kw">where</span>
+  mempty <span class="fu">=</span> <span class="dt">Empty</span>
+  mappend <span class="fu">=</span> <span class="dt">Concat</span>
+
+<span class="kw">instance</span> <span class="dt">Semiring</span> <span class="dt">Regex</span> <span class="kw">where</span>
+  one <span class="fu">=</span> undefined <span class="co">-- not sure what should go here.</span>
+  (<span class="fu">&lt;.&gt;</span>) <span class="fu">=</span> <span class="dt">Union</span></code></pre></div>
+<p>Now lets look at some examples:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">wordRegex ::</span> [<span class="dt">Char</span>] <span class="ot">-&gt;</span> <span class="dt">Regex</span>
+wordRegex w <span class="fu">=</span> mconcat (<span class="dt">Atom</span> <span class="fu">&lt;$&gt;</span><span class="ot"> w ::</span> [<span class="dt">Regex</span>])
+
+red <span class="fu">=</span> wordRegex <span class="st">&quot;red&quot;</span>
+blue <span class="fu">=</span> wordRegex <span class="st">&quot;blue&quot;</span></code></pre></div>
+<p>In the REPL we have</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&gt;</span> useRegex redblue <span class="st">&quot;redbluered&quot;</span>
+(<span class="dt">Right</span> <span class="st">&quot;redblue&quot;</span>,<span class="st">&quot;red&quot;</span>)
+<span class="fu">&gt;</span> useRegex redblue <span class="st">&quot;0redbluered&quot;</span>
+(<span class="dt">Left</span> (<span class="dt">UnexpectedCharacter</span> <span class="ch">'0'</span>),<span class="st">&quot;0redbluered&quot;</span>)
+<span class="fu">&gt;</span> useRegex (<span class="dt">Kleene</span> redblue) <span class="st">&quot;redbluered&quot;</span>
+(<span class="dt">Right</span> <span class="st">&quot;redblue&quot;</span>,<span class="st">&quot;red&quot;</span>)
+<span class="fu">&gt;</span> useRegex (<span class="dt">Kleene</span> redblue) <span class="st">&quot;0redbluered&quot;</span>
+(<span class="dt">Right</span> <span class="st">&quot;&quot;</span>,<span class="st">&quot;0redbluered&quot;</span>)</code></pre></div>
+
+  </body>
+</html>
