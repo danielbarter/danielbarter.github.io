@@ -30,7 +30,7 @@
     var node = document.getElementById('mix1');
     var app = Elm.Main.embed(node);
 </script>
-<p>Statements in the assembler language look like <strong>(:label) (/mask) (instruction) (relative address) (+index)</strong>. Instuctions in memory look like <strong>(address:label) (/mask) (instruction) (address|label) (+index)</strong>. Here is an example multiplication routine:</p>
+<p>Statements in the assembler language look like <strong>(:label) (/mask) (instruction) (relative address) (+index)</strong>. Instuctions in memory look like <strong>address(:label) (/mask) (instruction) (address|label) (+index)</strong>. Here is an example multiplication routine:</p>
 <pre class="algorithm"><code># multiplication routine
 :start LDA y
 JAZ end
