@@ -24,8 +24,8 @@
 <p>If you are writing a piece of software which needs to process text, <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a> are a useful tool. There are many mature regex libraries in the wild, but I thought it would be a fun exercise to implement some basic regex functionality in Haskell.</p>
 <h3 id="setting-up-the-workspace">Setting up the workspace</h3>
 <p>Before we write any code, we need to set up a workspace. We shall use the <a href="https://docs.haskellstack.org/en/stable/README/">stack build system</a>. First open a shell and run</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">stack</span> new hs-regex protolude
-<span class="kw">cd</span> ./hs-regex</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">stack</span> new hs-regex protolude
+<span class="bu">cd</span> ./hs-regex</code></pre></div>
 <p><a href="https://github.com/sdiehl/protolude">Protolude</a> is a minimal Haskell prelude which I like using. We are going to be using the <a href="https://hackage.haskell.org/package/vector">vector</a> and <a href="https://hackage.haskell.org/package/text">text</a> libraries, so in <code>hs-regex.cabal</code>, edit the <code>library</code> section so it looks like</p>
 <pre class="algorithm"><code>library
   hs-source-dirs:      src

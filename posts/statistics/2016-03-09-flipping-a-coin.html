@@ -31,7 +31,7 @@ X_i}{n} + \sqrt{log(40)/2n} \right] \right) \geq 0.95.\]</span> Since <span clas
 <h3 id="the-bayesian-approach">The Bayesian Approach</h3>
 <p>Write <span class="math inline">\(\Phi\)</span> for the probability that the coin lands heads. Since we do not know the value of <span class="math inline">\(\Phi\)</span>, we consider it a random variable. We have no prior information about <span class="math inline">\(\Phi\)</span>, so our initial guess is that <span class="math inline">\(\Phi\)</span> is uniformly distributed: the probability density function is <span class="math inline">\(f_{\Phi}(\phi) = 1\)</span>.</p>
 <div class="figure">
-<img src="../../img/2016-03-09-predist.PNG" alt />
+<img src="../../img/2016-03-09-predist.PNG" />
 
 </div>
 <p>Suppose that we flip the coin <span class="math inline">\(n\)</span> times and observe <span class="math inline">\(r\)</span> heads. Call this event <span class="math inline">\(K\)</span>. We now have more information, so we should update our probability density function. We do this using <a href="https://en.wikipedia.org/wiki/Bayes'_theorem">Bayes law</a>. Let <span class="math inline">\(h\)</span> be very small. Then</p>
@@ -43,7 +43,7 @@ X_i}{n} + \sqrt{log(40)/2n} \right] \right) \geq 0.95.\]</span> Since <span clas
   = \lim_{h \to 0} \frac{{\bf P}(\phi \leq \Phi \leq \phi + h | K)}{h} 
   = \frac{\phi^r(1-\phi)^{n-r}}{\int_0^1 \phi^r(1 - \phi)^{n-r} d \phi}\]</span> which looks like</p>
 <div class="figure">
-<img src="../../img/2016-03-09-postdist.PNG" alt />
+<img src="../../img/2016-03-09-postdist.PNG" />
 
 </div>
 <p>As you can see, the new distribution is more concentrated around <span class="math inline">\(r/n\)</span>.</p>
