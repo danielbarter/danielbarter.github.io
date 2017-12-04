@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="flipping-a-coin">Flipping a Coin</h1>
+<h1 id="flipping-a-coin">Flipping a Coin</h1>
 <p>A few weeks ago, I was exposed to my first large data set. It made me want to learn some statistical theory.</p>
 <p>Suppose that you have a coin. You flip it <span class="math inline">\(n\)</span> times and record the number of heads. What can you say about the coin?</p>
 <h3 id="the-frequentist-approach">The Frequentist Approach</h3>
@@ -49,6 +50,7 @@ X_i}{n} + \sqrt{log(40)/2n} \right] \right) \geq 0.95.\]</span> Since <span clas
 <p>As you can see, the new distribution is more concentrated around <span class="math inline">\(r/n\)</span>.</p>
 <h3 id="discussion">Discussion</h3>
 <p>As a mathematician, it is not my place to argue for either the Frequentist or Bayesian approach to this problem. As a human being, I favor the Bayesian approach. Less mental gymnastics is required to interpret pictures of density functions than is required to interpret statements like &quot;we are 95% sure that <span class="math inline">\(\phi\)</span> is between <span class="math inline">\(f(H)\)</span> and <span class="math inline">\(g(H)\)</span>&quot;. Another benefit of the Bayesian approach is that it suggests how to store unknown values in a computer: Consider them as random variables and store the density function. As you learn more information, the density function is updated.</p>
+
 
   </body>
 </html>

@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="classical-mechanics-and-differential-geometry">Classical Mechanics and Differential Geometry</h1>
+<h1 id="classical-mechanics-and-differential-geometry">Classical Mechanics and Differential Geometry</h1>
 <p>Recall Newton's second law which describes the motion of a particle in the presence of a conservative force field: <span class="math display">\[m \frac{d^2 x}{dt^2} + \nabla V(x) = 0\]</span> where <span class="math inline">\(m\)</span> is mass the mass of the particle, <span class="math inline">\(x \in \mathbb{R}^3\)</span> is the position of the particle and <span class="math inline">\(V\)</span> is the potential energy function. Newton's second law specifies a set of curves in <span class="math inline">\(\mathbb{R}^3\)</span>. In this post, we are going to describe the same set of curves in a coordinate independent way.</p>
 <h3 id="the-euler-lagrange-equations">The Euler-Lagrange equations</h3>
 <p>Let <span class="math inline">\(M\)</span> be a manifold and <span class="math inline">\(L : TM \to \mathbb{R}\)</span> a function which we will call the Lagrangian. Define <span class="math inline">\(\Omega(a,b;M)\)</span> to be the set of paths from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> in <span class="math inline">\(M\)</span>. We define the action functional <span class="math inline">\(S : \Omega(a,b;M) \to \mathbb{R}\)</span> by the equation <span class="math display">\[S(x) = \int L\left( x,\frac{dx}{dt} \right) dt.\]</span> It is natural to ask which curves are local minima for the action functional. This is a local condition on the curve: If <span class="math inline">\(x\)</span> is a local minima, then any small section of <span class="math inline">\(x\)</span> is also a local minima for its corresponding action functional. Therefore, we can compute in local coordinates what it means for <span class="math inline">\(x\)</span> to be a local minima of the action functional. Let <span class="math inline">\(x(s,t)\)</span> be a curve in <span class="math inline">\(\Omega(a,b;M)\)</span> which equals <span class="math inline">\(x\)</span> when <span class="math inline">\(s=0\)</span>. It follows from the chain rule that <span class="math display">\[\frac{d}{ds} S(x) = \int \frac{\partial L}{\partial x^i} \frac{\partial x^i}{\partial s} dt + 
@@ -31,6 +32,7 @@
 <p>The vector field we saw at the end of the last section is very special, but to see why, we need to understand the canonical symplectic structure on the cotangent bundle of the manifold <span class="math inline">\(M\)</span>. Let <span class="math inline">\(\pi : T^*M \to M\)</span> be the projection. We can define a 1-form <span class="math inline">\(\alpha\)</span> on <span class="math inline">\(T^*M\)</span> by the equation <span class="math display">\[\alpha_{\eta}(V) = \eta(\pi' X).\]</span> Let <span class="math inline">\(x^i\)</span> be coordinates on <span class="math inline">\(M\)</span> and <span class="math inline">\(p_i\)</span> the induced coordinates on the fibers of <span class="math inline">\(T^*M\)</span>. Then we have <span class="math display">\[\alpha(\partial / \partial p_i) = 0 \quad \alpha(\partial / \partial x^i) = p_i.\]</span> This implies that <span class="math inline">\(\alpha = p_i dx^i\)</span>. We define <span class="math display">\[w = d \alpha = d p_i \wedge d x^i = d p_i \otimes d x^i - d x^i \otimes d p_i.\]</span> This is called the canonical symplectic form on <span class="math inline">\(T^*M\)</span>. The induced map <span class="math inline">\(w : TM \to T^* M\)</span> is <span class="math display">\[\frac{\partial}{\partial x^i} \mapsto d p_i \quad \frac{\partial}{\partial p_i} \mapsto - dx^i\]</span> If <span class="math inline">\(H : T^*M \to \mathbb{R}\)</span> is a function, then <span class="math display">\[X_H = w^{-1} dH = \frac{\partial H}{\partial p_i} \frac{\partial}{\partial x^i} - \frac{\partial H}{\partial x^i} \frac{\partial}{\partial p_i}\]</span> is called the symplectic gradient of <span class="math inline">\(H\)</span>.</p>
 <h3 id="the-hamiltonian">The Hamiltonian</h3>
 <p>Now lets return to classical mechanics on a Riemannian manifold. We have have seen that solutions for the Euler-Lagrange equation are flow curves of the vector field <span class="math display">\[\left( g^{ij}p_j, - \frac{1}{m} \frac{\partial V}{\partial x^i} \right)\]</span> This vector field is exactly the symplectic gradient of <span class="math display">\[H = \frac{1}{2} g^{ij} p_i p_j + \frac{1}{m} V.\]</span></p>
+
 
   </body>
 </html>

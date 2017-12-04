@@ -7,24 +7,26 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="the-discriminative-approach-to-classification-for-mnist">The Discriminative Approach to Classification for MNIST</h1>
+<h1 id="the-discriminative-approach-to-classification-for-mnist">The Discriminative Approach to Classification for MNIST</h1>
 <p>In the <a href="2016-06-08-naive-bayes-classification-and-mnist-database.html">last post</a> we described the simplest possible generative approach to classifying digits in the MNIST database. In this post, we are going to explore the discriminative approach to classification.</p>
 <h3 id="the-model">The Model</h3>
 <p>Let <span class="math inline">\(\mathcal{D} = \left\{ y^n \in S,x^n \in \mathbb{R}^f \right\}_{n=1,\dots,N}\)</span> be a data set. For notational convenience, we embed <span class="math inline">\(S\)</span> into Euclidean space: <span class="math display">\[S = \{ s_1,\dots,s_c \} \hookrightarrow \mathbb{R}^c \quad s_i \mapsto e_i.\]</span> Given a parameter space <span class="math inline">\(\Theta\)</span> and functions <span class="math inline">\(f_1,\dots,f_c : \Theta \times \mathbb{R}^f \to (0,1)\)</span>, we define the following probability distribution: <span class="math display">\[p(y | \theta,x) = \prod_i f_i(\theta,x)^{y_i}\]</span> Given a prior distribution <span class="math inline">\(p(\theta)\)</span> over <span class="math inline">\(\Theta\)</span>, Bayes rule implies that <span class="math display">\[\log p(\theta | \mathcal{D}) = \log p(\theta) + \sum_{n,i} y^n_i \log 
 f_i(\theta,x^n).\]</span> We can choose parameters given data using maximum likelihood estimation. More precisely, we want to minimize the following expression: <span class="math display">\[-\sum_{n,i} y^n_i \log f_i(\theta,x^n)\]</span> Intuitively, we are choosing parameters which minimize the <a href="https://en.wikipedia.org/wiki/Cross_entropy">cross entropy</a> between the predicted distribution on <span class="math inline">\(y\)</span> and the observed distribution on <span class="math inline">\(y\)</span>. Minimizing the cross entropy is only half the story. We also need to choose the parameter space <span class="math inline">\(\Theta\)</span> and functions <span class="math inline">\(f_1,\dots,f_c\)</span>. To keep things simple, we shall take <span class="math display">\[(f_1,\dots,f_c)(W,b,x) = {\rm softmax}(Wx + b)\]</span> where <span class="math inline">\(W\)</span> is a <span class="math inline">\(c \times f\)</span> matrix, <span class="math inline">\(b \in \mathbb{R}^c\)</span> and <a href="https://en.wikipedia.org/wiki/Softmax_function">softmax</a> transforms the output into a probability distribution. These ideas are demonstrated in <a href="https://github.com/danielbarter/personal_website_code/blob/master/blog_notebooks/mnist/helm_mnist.ipynb">this notebook.</a></p>
+
 
   </body>
 </html>

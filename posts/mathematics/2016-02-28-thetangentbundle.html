@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="the-tangent-bundle">The tangent bundle</h1>
+<h1 id="the-tangent-bundle">The tangent bundle</h1>
 <p>In <a href="2016-02-07-tangentspaces.html">the last post</a>, we defined the tangent space to a manifold at a point. That was the first step towards doing calculus on a manifold. In this post, we shall take the second step which is <em>bundling</em> the tangent spaces up into a single geometric object called the tangent bundle. We shall describe the tangent bundle in several different ways: As a vector bundle, as a locally free sheaf and as a sheaf of differential operators. Along the way we will see some more definitions from abstract sheaf theory.</p>
 <h3 id="vector-bundles">Vector bundles</h3>
 <p>Let <span class="math inline">\(X\)</span> be a manifold. Informally speaking, a vector bundle over <span class="math inline">\(X\)</span> is a family of vector spaces parameterized smoothly by the points in <span class="math inline">\(X\)</span>. This colloquial language does not suggest a definition. Here is a potential definition (which is incorrect): A vector bundle over <span class="math inline">\(X\)</span> consists of a manifold <span class="math inline">\(E\)</span> and a smooth map <span class="math inline">\(\pi : E \to X\)</span> such that each fiber <span class="math inline">\(\pi^{-1}(x) = \{ v \in E : \pi(v) = x\}\)</span> is a vector space. The main problem with this definition is that we are not forcing the vector space structure on the fibers to vary smoothly as we move around in <span class="math inline">\(X\)</span>. A second problem is that from this definition, there is no obvious way to describe a specific vector bundle structure. It should be easy to describe a vector bundle you are working with to your friends (assuming that you can describe the base manifold to them). Before we give the correct definition, we need some new terminology. Suppose that <span class="math inline">\(\pi : E \to X\)</span> is a smooth map. A vector bundle chart on <span class="math inline">\(E\)</span> consists of an open subset <span class="math inline">\(U \subseteq X\)</span> and a <a href="https://en.wikipedia.org/wiki/Diffeomorphism">diffeomorphism</a> <span class="math inline">\(\pi^{-1}(U) = U \times \mathbb{R}^r\)</span>. Now we can give the correct definition: A vector bundle over <span class="math inline">\(X\)</span> consists of a manifold <span class="math inline">\(E\)</span> and a smooth map <span class="math inline">\(\pi : E \to X\)</span> such that</p>
@@ -69,6 +70,7 @@ D(g) + g D(f) \}\]</span> This is the sheaf of first order differential operator
 <li>Check that <span class="math inline">\({\rm Hom}(\mathscr{F},\mathscr{G})\)</span> is actually a sheaf.</li>
 <li><strong>(Harder)</strong> Prove that every vector bundle over <span class="math inline">\(\mathbb{R}^d\)</span> is trivial.</li>
 </ol>
+
 
   </body>
 </html>

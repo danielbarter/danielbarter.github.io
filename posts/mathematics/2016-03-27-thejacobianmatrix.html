@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="the-jacobian-matrix">The Jacobian Matrix</h1>
+<h1 id="the-jacobian-matrix">The Jacobian Matrix</h1>
 <p>In the <a href="2016-02-28-thetangentbundle.html">last post</a>, we defined the tangent bundle. We have finally developed enough machinery to start seriously doing calculus on manifolds. In this post, we shall define the derivative of a smooth map between manifolds and translate the <a href="https://en.wikipedia.org/wiki/Implicit_function_theorem">implicit function theorem</a> into the language of differential geometry.</p>
 <h3 id="pulling-back-vector-bundles">Pulling back vector bundles</h3>
 <p>Suppose that <span class="math inline">\(f : X \to Y\)</span> is a smooth map between manifolds and <span class="math inline">\(E\)</span> is a vector bundle on <span class="math inline">\(Y\)</span>. Then we can construct the pullback vector bundle <span class="math inline">\(f^*E\)</span> on <span class="math inline">\(X\)</span>. The fiber over <span class="math inline">\(x \in X\)</span> is <span class="math inline">\((f^*E)_x = E_{f(x)}\)</span>. This describes <span class="math inline">\(f^*E\)</span> as a set. If <span class="math inline">\((\phi_{\beta\alpha})\)</span> is gluing data for <span class="math inline">\(E\)</span>, then <span class="math inline">\((\phi_{\beta\alpha} \circ f)\)</span> is gluing data for <span class="math inline">\(f^*E\)</span>. This describes <span class="math inline">\(f^* E\)</span> as a vector bundle. We can also realize the pullback bundle <span class="math inline">\(f^*E\)</span> as the following <a href="https://en.wikipedia.org/wiki/Pullback_%28category_theory%29">fibered product</a>: <span class="math display">\[\require{AMScd}
@@ -72,6 +73,7 @@ X @&gt;{f}&gt;&gt; Y;
 <li>when is the solution set of a polynomial <span class="math inline">\(f(x_1,\dots,x_n)\)</span> a smooth manifold?</li>
 <li><strong>(Harder)</strong> Compute the Jacobian of the determinant map <span class="math inline">\({\rm det} : {\rm GL}_n(\mathbb{R}) \to \mathbb{R}^{\times}\)</span>.</li>
 </ul>
+
 
   </body>
 </html>

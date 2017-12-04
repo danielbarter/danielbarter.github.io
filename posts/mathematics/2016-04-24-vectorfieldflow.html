@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="vector-field-flow">Vector Field Flow</h1>
+<h1 id="vector-field-flow">Vector Field Flow</h1>
 <p>In the <a href="2016-03-27-thejacobianmatrix.html">last post</a>, we finally explained how to differentiate a smooth map between manifolds, justifying the phrase <em>a manifolds is a space on which one can do calculus</em>. We have only scratched the surface. There is much more to say about manifolds. Before we can go deeper, we need a better understanding of vector fields. Let <span class="math inline">\(X\)</span> be a manifold. Recall that a vector field is a section of the <a href="2016-02-28-thetangentbundle.html">tangent bundle</a> <span class="math inline">\(TX\)</span>. If <span class="math inline">\(x^1,\dots,x^d\)</span> are coordinates on <span class="math inline">\(U \subseteq X\)</span>, then the vector fields on <span class="math inline">\(U\)</span> look like <span class="math display">\[f^i \frac{\partial}{\partial x^i}\]</span> (we are using the <a href="https://en.wikipedia.org/wiki/Einstein_notation">Einstein summation convention</a>). One way to construct vector fields on <span class="math inline">\(X\)</span> is by describing them on coordinate patches and checking that they change coordinates correctly. For example, consider the coordinates <span class="math inline">\(\theta : S^1 \backslash \{ (1,0) \} \to (0,2 \pi)\)</span> and <span class="math inline">\(\phi : S^1 \backslash \{ (-1,0) \} \to (-\pi,\pi)\)</span>.</p>
 <div class="figure">
 <img src="../../img/2016-04-24-circlecoordinates.PNG" />
@@ -61,6 +62,7 @@ y^k}\]</span> Since <span class="math inline">\(E\)</span> is integral, this Lie
 </ul></li>
 <li>The sub bundle spanned by <span class="math inline">\(U = \partial/ \partial x + y \partial / \partial z\)</span> and <span class="math inline">\(V = \partial / \partial y\)</span> is not integrable. Can you see why geometrically?</li>
 </ol>
+
 
   </body>
 </html>

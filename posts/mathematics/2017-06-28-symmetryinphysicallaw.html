@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="symmetry-in-physical-law">Symmetry in Physical Law</h1>
+<h1 id="symmetry-in-physical-law">Symmetry in Physical Law</h1>
 <p>Symmetry plays an important role in physics. In order to make things precise, we need language for talking about the symmetry groups of differential equations. In this post, we shall develop this language and look at some simple examples.</p>
 <h3 id="jet-bundles">Jet Bundles</h3>
 <p>To keep things simple, we work locally. Consider a manifold <span class="math inline">\(N^n\)</span> with coordinates <span class="math inline">\(x^i\)</span> and a manifold <span class="math inline">\(D^d\)</span> with coordinates <span class="math inline">\(u^{\alpha}\)</span>. We call <span class="math inline">\(x^i\)</span> the <strong>independent</strong> variables and <span class="math inline">\(u^{\alpha}\)</span> the <strong>dependent</strong> variables. We want to study maps <span class="math inline">\(N \to D\)</span>. The graphs of such maps are <span class="math inline">\(n\)</span>-dimensional closed submanifolds of <span class="math inline">\(N \times D\)</span> which has coordinates <span class="math inline">\(x^i,u^{\alpha}\)</span>. Another name for the product manifold <span class="math inline">\(N \times D\)</span> is the <span class="math inline">\(0\)</span>-jet bundle. We construct the <span class="math inline">\(p\)</span>-jet bundle locally as follows: It has coordinates <span class="math inline">\(x^i,u_I^{\alpha}\)</span> where <span class="math inline">\(I\)</span> is a weakly increasing sequence in <span class="math inline">\(\{1,2,\dots,n\}\)</span> with length <span class="math inline">\(0 \leq l \leq p\)</span>. If <span class="math inline">\(I = i_1 \leq i_2 \leq \dots \leq i_q\)</span>, the coordinate <span class="math inline">\(u_I^{\alpha}\)</span> is supposed to record the partial derivative <span class="math display">\[\frac{\partial^q u^{\alpha}}{\partial x^{i_1} \partial x^{i_2} \cdots \partial x^{i_q}}.\]</span> For example, take <span class="math inline">\(n = 1, d = 2\)</span>. Then the coordinates on the second jet bundle are <span class="math display">\[x,u,v,u_x,v_x,u_{xx},v_{xx}.\]</span> If we take <span class="math inline">\(n = 2, d = 1\)</span>, the coordinates on the second jet bundle are <span class="math display">\[x,y,u,u_x,u_y,u_{xx},u_{xy},u_{yy}.\]</span> Every map <span class="math inline">\(f : N \to D\)</span> induces an <span class="math inline">\(n\)</span>-dimensional submanifold <span class="math inline">\(G_f = (x^i,f_I^{\alpha}(x^i))\)</span> in the jet bundle. The <span class="math inline">\(1\)</span>-form <span class="math display">\[\theta_I^{\alpha} = d u^{\alpha}_I - u^{\alpha}_{I i} d x^i\]</span> vanishes on the submanifold <span class="math inline">\(G_f\)</span> for every <span class="math inline">\(f\)</span>. We call <span class="math inline">\(\theta_I^{\alpha}\)</span> a <strong>contact ideal</strong>.</p>
@@ -70,6 +71,7 @@ f = A \qquad \phi = B \sin(x) + C \cos(x).
 \]</span> Therefore, a basis for the Lie algebra of the symmetry group is <span class="math display">\[
 \frac{\partial}{\partial x} \qquad \sin(x)\frac{\partial}{\partial u} \qquad \cos(x)\frac{\partial}{\partial u}.
 \]</span></p>
+
 
   </body>
 </html>

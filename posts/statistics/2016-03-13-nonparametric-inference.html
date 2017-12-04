@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="non-parametric-inference">Non Parametric Inference</h1>
+<h1 id="non-parametric-inference">Non Parametric Inference</h1>
 <p>Suppose that we have a data set <span class="math inline">\((x_i) \in \mathbb{R}^n\)</span> produced from <span class="math inline">\(n\)</span> independent repetitions of an experiment. The mathematical model for this situation is <span class="math inline">\(n\)</span> independent identically distributed random variables <span class="math inline">\(X_1,\dots,X_n \sim F\)</span> for some <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">cumulative distribution function</a> <span class="math inline">\(F\)</span>. What can we learn about <span class="math inline">\(F\)</span>? We shall approach this problem from a frequentest perspective, so <span class="math inline">\(F\)</span> is some fixed unknown cumulative distribution function. Everything we are going to say can be found in the wonderful book <a href="http://www.stat.cmu.edu/~larry/all-of-nonpar/">All of Non Parametric Statistics</a> by Wasserman.</p>
 <h3 id="the-empirical-distribution-function">The Empirical Distribution Function</h3>
 <p>The most important random object in this setting is the <strong>empirical distribution function</strong>: <span class="math display">\[\widehat{F}_n(x) = \frac{1}{n} \sum_{i=1}^n \; {\bf 1}_{X_i \leq x}\]</span> It is the step function which jumps up <span class="math inline">\(1/n\)</span> whenever <span class="math inline">\(x\)</span> crosses one of the <span class="math inline">\(x_i\)</span> in our data set. The importance of the empirical distribution function stems from the <a href="https://en.wikipedia.org/wiki/Glivenko%E2%80%93Cantelli_theorem">Glivenko-Cantelli theorem</a>, which says that <span class="math display">\[\sup_{x} \lvert \widehat{F}_n(x) - F(x) \lvert \; \xrightarrow{P} \; 0\]</span> The <span class="math inline">\(P\)</span> stands for convergence in probability. Intuitively, this says that if the sample size <span class="math inline">\(n\)</span> is large, the probability that <span class="math inline">\(\widehat{F}_n\)</span> and <span class="math inline">\(F\)</span> are &quot;far apart&quot; is small. This intuition can be quantified as follows: Define <span class="math display">\[ L(x) = \widehat{F}_n(x) - \epsilon_n \qquad U(x) = \widehat{F}_n(x) + \epsilon_n 
@@ -57,6 +58,7 @@ Z \leq \epsilon) \qquad Z \sim N(0,1)\]</span> There is a problem: The value <sp
 <li>Compute the variance of the resulting vector in <span class="math inline">\(\mathbb{R}^h\)</span>.</li>
 </ol>
 <p>If we make <span class="math inline">\(h\)</span> very large, the weak law of large numbers tells us that the result is going to be very close to <span class="math inline">\({\bf V}_{\widehat{F}_n}(\widehat{\theta}_n)\)</span>.</p>
+
 
   </body>
 </html>

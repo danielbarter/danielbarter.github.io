@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="regular-expressions-in-haskell">Regular expressions in Haskell</h1>
+<h1 id="regular-expressions-in-haskell">Regular expressions in Haskell</h1>
 <p>If you are writing a piece of software which needs to process text, <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a> are a useful tool. There are many mature regex libraries in the wild, but I thought it would be a fun exercise to implement some basic regex functionality in Haskell.</p>
 <h3 id="setting-up-the-workspace">Setting up the workspace</h3>
 <p>Before we write any code, we need to set up a workspace. We shall use the <a href="https://docs.haskellstack.org/en/stable/README/">stack build system</a>. First open a shell and run</p>
@@ -150,6 +151,7 @@ redblue <span class="fu">=</span> red <span class="ot">`mappend`</span> blue</co
 (<span class="dt">Right</span> <span class="st">&quot;redblue&quot;</span>,<span class="st">&quot;red&quot;</span>)
 <span class="fu">&gt;</span> useRegex (<span class="dt">Kleene</span> redblue) <span class="st">&quot;0redbluered&quot;</span>
 (<span class="dt">Right</span> <span class="st">&quot;&quot;</span>,<span class="st">&quot;0redbluered&quot;</span>)</code></pre></div>
+
 
   </body>
 </html>

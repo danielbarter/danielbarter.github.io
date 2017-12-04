@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="tangent-spaces">Tangent spaces</h1>
+<h1 id="tangent-spaces">Tangent spaces</h1>
 <p>In <a href="2016-01-31-whatisamanifold.html">the last post</a>, we defined manifolds. In this post we shall start building the infrastructure required to do calculus on manifolds.</p>
 <h3 id="not-sheaves-again....">Not sheaves again....</h3>
 <p>In the last post, we defined the sheaf of observables on a topological space <span class="math inline">\(X\)</span>: For each open set <span class="math inline">\(U \subseteq X\)</span>, define <span class="math inline">\(\mathcal{O}_X(U)\)</span> to be the <a href="https://en.wikipedia.org/wiki/Algebra_over_a_field">algebra</a> of continuous functions <span class="math inline">\(U \to \mathbb{R}\)</span>. If <span class="math inline">\(U \subseteq V\)</span> are open sets, then restriction gives us an algebra homomorphism <span class="math inline">\(\mathcal{O}_X(V) \to \mathcal{O}_X(U)\)</span>. Sheaves might seem pointless at this point, but they are one of the most important organizational tools in geometry, so it is important for us to write down a precise definition which we can refer to later. We will break the definition into two parts. Let <span class="math inline">\(X\)</span> be a topological space. A <em>presheaf</em> <span class="math inline">\(\mathcal{F}\)</span> on <span class="math inline">\(X\)</span> consists of the following data:</p>
@@ -80,6 +81,7 @@
 <li>Can you describe the change of basis matrix from <span class="math inline">\(\partial / \partial x_1 \lvert_p, \dots, \partial / \partial x_d \lvert_p\)</span> to <span class="math inline">\(\partial / \partial y_1 \lvert_p,  \dots, \partial / \partial y_d \lvert_p\)</span>?</li>
 <li><strong>(harder)</strong> The chain rule implies that <span class="math inline">\(\gamma'(0) = \delta'(0)\)</span> is independent of coordinates. Prove that <span class="math inline">\(\gamma^{(i)}(0) = \delta^{(i)}(0)\)</span> for all <span class="math inline">\(i \leq n\)</span> is also independent of coordinates.</li>
 </ol>
+
 
   </body>
 </html>

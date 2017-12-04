@@ -7,20 +7,21 @@
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
 
-      <nav>
-        <a href="../../"> HOME </a>
-        <span> / </span>
-        <a href="../../CV.html"> CV </a>
-        <span> / </span>
-        <a href="../../blog.html"> BLOG </a>
-        <span> / </span>
-        <a href="../../mix.html"> MIX1010 </a>
-        <span> / </span>
-        <a href="../../tableau.html"> TABLEAU </a>
-      </nav>
-
-    <h1 id="naive-bayes-and-the-mnist-database">Naive Bayes and the MNIST Database</h1>
+<h1 id="naive-bayes-and-the-mnist-database">Naive Bayes and the MNIST Database</h1>
 <p>The <a href="http://yann.lecun.com/exdb/mnist/">MNIST database</a> consists of handwritten digits stored as <span class="math inline">\(28 \times 28\)</span> bit maps. In this post, we are going to use the database to train a naive Bayesian classifier.</p>
 <h3 id="the-model">The Model</h3>
 <p>Our model has the following random variables:</p>
@@ -51,6 +52,7 @@ p(c,x| \widehat{\theta},\widehat{\pi})\]</span> which implies that <span class="
 \widehat{\pi}_c\]</span></p>
 <h3 id="the-implementation">The implementation</h3>
 <p>The MNIST bit maps are in gray scale. Firstly, we flatten them to black and white and translate the raw byte files into CSV files <a href="https://github.com/danielbarter/personal_website_code/tree/master/blog_notebooks/Niave_Bayes_classification_MNIST/mnistclean">using Haskell</a>. We then implement the above model <a href="https://github.com/danielbarter/personal_website_code/blob/master/blog_notebooks/Niave_Bayes_classification_MNIST/Niave_Bayes_Classification_MNIST_MLE.ipynb">in Python</a>. The trained NBC correctly identifies <span class="math inline">\(85\%\)</span> of the test set.</p>
+
 
   </body>
 </html>
