@@ -22,7 +22,7 @@
 </nav>
 
 <h1 id="insertion-and-merge-sort">Insertion and Merge Sort</h1>
-<p>Sorting an array is one of the cornerstone problems in computer science. In this post, we explore some algorithms for this task. All the code in this post can be found <a href="../../CALGO/sorting">here</a>. The algorithms are reproduced below. The linked directory also contains some code for testing the algorithms.</p>
+<p>Sorting an array is one of the cornerstone problems in computer science. In this post, we explore some algorithms for this task. All the code in this post can <a href="../../CALGO/sorting/insertion_merge_sort.c">be</a> <a href="../../CALGO/sorting/insertion_merge_sort_unboxed.c">found</a> <a href="../../CALGO/sorting/sort_test.c">here</a>. The algorithms are reproduced below. The linked directory also contains some code for testing the algorithms.</p>
 <h3 id="insertion-sort">Insertion Sort</h3>
 <p>Insertion sort begins with an array <span class="math inline">\(A\)</span>. Suppose that <span class="math inline">\(A\)</span> is sorted up to index <span class="math inline">\(i\)</span>. If we insert <span class="math inline">\(A_{i+1}\)</span> into the correct place, then <span class="math inline">\(A\)</span> will be sorted up to index <span class="math inline">\(i+1\)</span>. This allows us to inductively sort the array. Here is a C procedure which does this:</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> insertion_sort ( <span class="dt">int</span> *array, <span class="dt">int</span> length )
