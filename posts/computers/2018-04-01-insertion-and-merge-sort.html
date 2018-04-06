@@ -22,7 +22,7 @@
 </nav>
 
 <h1 id="insertion-and-merge-sort">Insertion and Merge Sort</h1>
-<p>Sorting an array is one of the cornerstone problems in computer science. In this post, we explore some algorithms for this task. All the code in this post can be found <a href="../../CALGO/array_sort.c">here</a>. The algorithms are reproduced below. The linked source file also contains some code for testing the algorithms.</p>
+<p>Sorting an array is one of the cornerstone problems in computer science. In this post, we explore some algorithms for this task. All the code in this post can be found <a href="../../CALGO/sorting">here</a>. The algorithms are reproduced below. The linked directory also contains some code for testing the algorithms.</p>
 <h3 id="insertion-sort">Insertion Sort</h3>
 <p>Insertion sort begins with an array <span class="math inline">\(A\)</span>. Suppose that <span class="math inline">\(A\)</span> is sorted up to index <span class="math inline">\(i\)</span>. If we insert <span class="math inline">\(A_{i+1}\)</span> into the correct place, then <span class="math inline">\(A\)</span> will be sorted up to index <span class="math inline">\(i+1\)</span>. This allows us to inductively sort the array. Here is a C procedure which does this:</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> insertion_sort ( <span class="dt">int</span> *array, <span class="dt">int</span> length )
@@ -143,6 +143,153 @@
 <p>Let <span class="math inline">\(T(L)\)</span> be the run time of this algorithm. Then we have the relation <span class="math display">\[
 T(L) = 2 T(L/2) + cn = 4 T(L/4) + 2 cn = \cdots \leq c' L \log_2 L.
 \]</span> Therefore the time complexity of merge sort is <span class="math inline">\(O(L \log L)\)</span>. The space complexity of this procedure is a little more subtle. Since the <code>merge</code> procedure allocates the arrays <code>l</code> and <code>r</code> on the stack, we just need to understand how the stack grows and shrinks during execution. Let <span class="math inline">\(S(L)\)</span> be the maximum stack size during execution. Then <span class="math display">\[ S(L) \leq {\rm max} \{ S(L/2),cL \} \]</span> because <code>merge</code> allocates a whole copy of the array on the stack. This implies the stack grows by <span class="math inline">\(O(L)\)</span> during execution.</p>
+<h3 id="boxing-things-up">Boxing things up</h3>
+<p>If you looked at the linked source code, you may have noticed that the procedures from the previous section are actually called <code>insertion_sort_unboxed</code> and <code>merge_sort_unboxed</code>. This is because they only work on lists of 32 bit integers. In practice, we want to sort more general types of arrays. We can achieve this by abstracting away the data which is contained in our array. This allows the algorithms to be used in more situations, but it also means they run slower than the unboxed versions. Before we can write generic versions of insertion and merge sort, we need to define a data structure that they will work on.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="kw">typedef</span> <span class="kw">struct</span>
+{
+  <span class="co">/* array of pointers */</span>
+  <span class="dt">void</span> **ptr;
+
+  <span class="co">/*</span>
+<span class="co">    we had to pass the array length to the unboxed procedures.</span>
+<span class="co">    Here we can wrap it up in the data structure.</span>
+<span class="co">   */</span>
+  <span class="dt">int</span> length;
+
+  <span class="co">/*</span>
+<span class="co">    given two elements of the list, we need to compare them.</span>
+<span class="co">    (*compare)(ptr1,ptr2) returns 1 if *ptr1 &lt; *ptr2</span>
+<span class="co">   */</span>
+  <span class="dt">int</span> (*compare)(<span class="dt">void</span> *ptr1, <span class="dt">void</span> *ptr2);
+} list;</code></pre></div>
+<p>The variable <code>ptr</code> represents a lists of pointers, each pointing to some presumeably complex data structure. The <code>length</code> variable represents the length of the list and <code>compare</code> points to a procedure which lets us compare the elements of the list. In terms of this data structure, the insertion sort procedure is defined as follows:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> insertion_sort (list *l)
+{
+  <span class="dt">int</span> j;            <span class="co">/* index of the next element to be inserted */</span>
+  <span class="dt">int</span> i;            <span class="co">/* index for looping through the sorted part of array */</span>
+  <span class="dt">void</span> *element;    <span class="co">/* next element to be inserted */</span>
+
+  <span class="cf">for</span> (j = <span class="dv">1</span>; j &lt; l-&gt;length; j++)
+    {
+      element = l-&gt;ptr[j];     <span class="co">/* store the element to be inserted */</span>
+      i = j - <span class="dv">1</span>;               <span class="co">/* store the top index of the already sorted part */</span>
+      <span class="cf">while</span> ( (i&gt;= <span class="dv">0</span>) &amp;&amp; (*l-&gt;compare)(element, l-&gt;ptr[i]))
+        <span class="co">/*</span>
+<span class="co">          loop through the already sorted part</span>
+<span class="co">          searching for where element needs to be inserted.</span>
+<span class="co">          At the same time, we also move the parts bigger than element one</span>
+<span class="co">          spot to the right.</span>
+<span class="co">         */</span>
+        {
+          l-&gt;ptr[i+<span class="dv">1</span>] = l-&gt;ptr[i];
+          i = i - <span class="dv">1</span>;
+        }
+      l-&gt;ptr[i+<span class="dv">1</span>] = element;      <span class="co">/* slot element in */</span>
+    }
+}</code></pre></div>
+<p>It is almost identical to the unboxed version. The generic merge sort procedure looks a little different. In the unboxed version, we used an infinity token during the <code>merge</code> procedure. There isn't an obvious way to do this in the generic case, so we need some extra logic.</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="dt">void</span> merge ( list *list, <span class="dt">int</span> low, <span class="dt">int</span> middle, <span class="dt">int</span> high)
+<span class="co">/*</span>
+
+<span class="co">  list is a pointer to a list structure.</span>
+<span class="co">  low, mid and high are indices with low &lt;= mid &lt; high</span>
+<span class="co">  the procedure assumes that l-&gt;ptr[low,mid] and l-&gt;ptr[mid+1,high] are sorted.</span>
+<span class="co">  It merges them so that l-&gt;ptr[low,high] is sorted.</span>
+
+<span class="co">*/</span>
+
+{
+  <span class="dt">int</span> l1 = middle - low + <span class="dv">1</span>;   <span class="co">/* length of first subarray */</span>
+  <span class="dt">int</span> l2 = high - middle;      <span class="co">/* length of second subarray */</span>
+
+
+  <span class="co">/*</span>
+<span class="co">    allocating some temporary arrays on the stack.</span>
+<span class="co">    In the unboxed version, we used an infinity token.</span>
+<span class="co">    In this case we can't do that because the infinity token is different for each</span>
+<span class="co">    data type.</span>
+<span class="co">  */</span>
+  <span class="dt">void</span> *l[l1];
+  <span class="dt">void</span> *r[l2];
+
+  <span class="dt">int</span> i;  <span class="co">/* index for L */</span>
+  <span class="dt">int</span> j;  <span class="co">/* index for R */</span>
+  <span class="dt">int</span> k;  <span class="co">/* index for list */</span>
+
+
+  <span class="co">/* initializing L */</span>
+  <span class="cf">for</span> (i = <span class="dv">0</span>; i &lt; l1; i++)
+    l[i] = list-&gt;ptr[low+i];
+
+
+  <span class="co">/* initializing R */</span>
+  <span class="cf">for</span> (j = <span class="dv">0</span>; j &lt; l2; j++)
+    r[j] = list-&gt;ptr[middle + <span class="dv">1</span> + j];
+
+  i = j = <span class="dv">0</span>;
+
+  <span class="cf">for</span> (k = low; k &lt;= high; k++)
+    {
+      <span class="cf">if</span> (i == l1 || j == l2)
+        <span class="co">/* once we reach the end of either array, we break out of the loop */</span>
+        <span class="cf">break</span>;
+      <span class="cf">else</span>
+        {
+          <span class="co">/* since the compare function computes &lt;, we need to negate to get &gt;= */</span>
+          <span class="cf">if</span> (! (*list-&gt;compare)(r[j],l[i]))
+            {
+              list-&gt;ptr[k] = l[i];
+              i = i + <span class="dv">1</span>;
+            }
+          <span class="cf">else</span>
+            {
+              list-&gt;ptr[k] = r[j];
+              j = j + <span class="dv">1</span>;
+            }
+        }
+    }
+
+  <span class="co">/* fill the list with the remaining elements */</span>
+  <span class="cf">if</span> (i == l1)
+    {
+      <span class="cf">for</span> (;k &lt;= high; k++)
+        {
+          list-&gt;ptr[k] = r[j];
+          j = j + <span class="dv">1</span>;
+        }
+    }
+  <span class="cf">else</span>
+    {
+      <span class="cf">for</span> (;k &lt;= high; k++)
+        {
+          list-&gt;ptr[k] = l[i];
+          i = i + <span class="dv">1</span>;
+        }
+    }
+
+}
+
+<span class="dt">void</span> merge_sort_sub(list *l,<span class="dt">int</span> low,<span class="dt">int</span> high)
+{
+  <span class="dt">int</span> mid;
+
+  <span class="cf">if</span> (low &lt; high)
+    {
+      mid = (low + high) / <span class="dv">2</span>;  <span class="co">/* integer division rounds down */</span>
+      merge_sort_sub(l,low,mid);
+      merge_sort_sub(l,mid+<span class="dv">1</span>,high);
+      merge(l,low,mid,high);
+    }
+}
+
+
+<span class="dt">void</span> merge_sort(list *l)
+{
+
+  <span class="co">/* arguments two and three for merge_sort_sub must be indices for the array */</span>
+  merge_sort_sub(l,<span class="dv">0</span>,l-&gt;length-<span class="dv">1</span>);
+}</code></pre></div>
+<p>The boxed versions of the algorithms have the same asymptotic space and time complexity as the unboxed versions. The constants hidden by the <span class="math inline">\(O\)</span> notation are larger in the boxed versions. In future posts, we shall try to write generic versions of algorithms.</p>
 
 
   </body>

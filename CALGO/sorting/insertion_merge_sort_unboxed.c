@@ -1,91 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <limits.h>
-
-void insertion_sort ( int *array, int length );
-void test_sort (  void (*sort_pointer) (int *array, int length), int array_test_size, int max_size );
-void print_array(int * array, int length);
-void merge ( int *array, int low, int middle, int high);
-void merge_sort_sub(int *array,int low,int high);
-void merge_sort(int *array, int length);
-
-int main(void)
-{
-  srand(time(NULL));  /*   initialize the seed for the pseudorandom generator   */
-
-  printf("testing insertion sort: \n\n");
-  test_sort(&insertion_sort,0,100);
-  test_sort(&insertion_sort,1,100);
-  test_sort(&insertion_sort,10,100);
-  test_sort(&insertion_sort,50,10);
-  printf("\n");
-
-
-  printf("testing merge sort: \n\n");
-  test_sort(&merge_sort,0,100);
-  test_sort(&merge_sort,1,100);
-  test_sort(&merge_sort,10,100);
-  test_sort(&merge_sort,50,10);
-  printf("\n");
-
-
-  return 0;
-}
-
-
-void test_sort (  void (*sort_pointer) (int *array, int length), int array_test_size, int max_size )
-
-/*
-
-  http://fuckingfunctionpointers.com/
-
-  sort_pointer is a pointer to the sorting procedure
-  array_test_size is the size of the array to test with
-  the entries of the test array are reduced modulo max_size
-
-*/
-
-{
-  int test[array_test_size];  /* dynamically allocated arrays yew */
-
-  int i;                      /* index for initializing the test arrays */
+void insertion_sort_unboxed ( int *array, int length );
+void merge_unboxed ( int *array, int low, int middle, int high);
+void merge_sort_sub_unboxed(int *array,int low,int high);
+void merge_sort_unboxed(int *array, int length);
 
 
 
-  /* initializing the test array with random data */
-  for (i = 0; i < array_test_size; i++)
-    {
-      test[i] = rand() % max_size;
-    }
-
-  /* printing the test array */
-  printf("test array with %d elements in range [0,%d]: ",array_test_size,max_size);
-  print_array(test, array_test_size);
-
-  printf("\n");
-  printf("applying procedure....... \n");
-  (*sort_pointer)(test,array_test_size);
-
-  /* printing the sorted array */
-  printf("sorted array: ");
-  print_array(test,array_test_size);
-  printf("\n\n");
-
-}
-
-void print_array(int *array, int length)
-{
-  int i;
-  for (i = 0; i < length; i++)
-    {
-      printf("%d ",array[i]);
-    }
-}
 
 
-
-void insertion_sort ( int *array, int length )
+void insertion_sort_unboxed ( int *array, int length )
 
 /*
 
@@ -118,7 +40,7 @@ void insertion_sort ( int *array, int length )
     }
 }
 
-void merge ( int *array, int low, int middle, int high)
+void merge_unboxed ( int *array, int low, int middle, int high)
 /*
 
   array is a pointer to the first element of the array.
@@ -179,22 +101,22 @@ void merge ( int *array, int low, int middle, int high)
 }
 
 
-void merge_sort_sub(int *array,int low,int high)
+void merge_sort_sub_unboxed(int *array,int low,int high)
 {
   int mid;
 
   if (low < high)
     {
       mid = (low + high) / 2;  /* integer division rounds down */
-      merge_sort_sub(array,low,mid);
-      merge_sort_sub(array,mid+1,high);
-      merge(array,low,mid,high);
+      merge_sort_sub_unboxed(array,low,mid);
+      merge_sort_sub_unboxed(array,mid+1,high);
+      merge_unboxed(array,low,mid,high);
     }
 }
 
-void merge_sort(int *array, int length)
+void merge_sort_unboxed(int *array, int length)
 {
 
   /* arguments two and three for merge_sort_sub must be indices for the array */ 
-  merge_sort_sub(array,0,length-1);
+  merge_sort_sub_unboxed(array,0,length-1);
 }
