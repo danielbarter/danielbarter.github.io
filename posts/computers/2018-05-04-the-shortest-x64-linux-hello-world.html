@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Daniel Barter - the shortest x64 linux hello world</title>
+    <link href="../../style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  </head>
+  <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../blog.html"> BLOG </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
+
+<h1 id="the-shortest-x64-linux-hello-world">The Shortest x64 Linux Hello World</h1>
+<p>The first program that you write in a new language is Hello, world! In C, it looks like this:</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> main (<span class="dt">void</span>) {
+  puts(<span class="st">&quot;Hello, world!&quot;</span>);
+  <span class="cf">return</span> <span class="dv">0</span>;
+}</code></pre></div>
+<p>On my machine, using gcc to compile, this code produces an executable that is 8376 bytes long! There is a shorter way. When Linux loads an executable, it is expected to be an <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format">ELF</a> file. Roughly speaking, ELF files consist of a list of objects organized into sections like <code>.text</code> which contains code objects and <code>.data</code> which contains data objects. To print &quot;Hello, world!&quot;, we need two objects: the code which executes a print system call and the string &quot;Hello, world!&quot;. We can write an assembly program that specifies exactly these objects:</p>
+<div class="sourceCode"><pre class="sourceCode asm"><code class="sourceCode fasm">  .intel_syntax noprefix        # specify the assembly language
+
+
+  .text                         # start of text <span class="bu">section</span>
+
+
+  .globl _start                 # _start object metadata
+  .type _start, @function       # _start object metadata
+<span class="fu">_start:</span>
+  <span class="bu">mov</span> <span class="kw">rax</span>, <span class="dv">1</span>
+  <span class="bu">mov</span> <span class="kw">rdi</span>, <span class="dv">1</span>
+  <span class="bu">lea</span> <span class="kw">rsi</span>, string_<span class="dv">1</span>
+  <span class="bu">mov</span> <span class="kw">rdx</span>, <span class="dv">14</span>
+  <span class="bu">syscall</span>                       # sys_write(<span class="dv">1</span>,string_<span class="dv">1</span>,<span class="dv">14</span>)<span class="co">;</span>
+  <span class="bu">mov</span> <span class="kw">rax</span>, <span class="dv">60</span>
+  <span class="bu">mov</span> <span class="kw">rdi</span>, <span class="dv">0</span>
+  <span class="bu">syscall</span>                       # sys_exit(<span class="dv">0</span>)<span class="co">;</span>
+  .size _start, .-_start        # _start object metadata. <span class="st">'.'</span> evaluates to current location
+
+
+  .<span class="bu">data</span>                         # start of <span class="bu">data</span> <span class="bu">section</span>
+
+
+  .globl string_<span class="dv">1</span>               # string_<span class="dv">1</span> object metadata
+  .type string_<span class="dv">1</span>, @object       # string_<span class="dv">1</span> object metadata
+<span class="fu">string_1:</span>
+  .string <span class="st">&quot;Hello, world!\n&quot;</span>
+  .size string_<span class="dv">1</span>, <span class="dv">14</span>           	# string_<span class="dv">1</span> object metadata</code></pre></div>
+<p>This code specifies exactly two objects, <code>_start</code>, a code object which executes a write system call and then an exit system call and <code>string_1</code> which contains the string to print. If we run <code>as hello.s -o hello.o; ld hello.o -o hello.elf</code>, the resulting executable behaves exactly how it should and it is only 936 bytes long, about a 10th of the size! It is probably possible to go smaller, but by doing so, you would need to start omitting meta data about the objects in the ELF file which makes it harder to the operating system to organize the program correctly in memory.</p>
+
+
+  </body>
+</html>
