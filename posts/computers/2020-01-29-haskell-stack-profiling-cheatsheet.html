@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Daniel Barter - haskell profiling cheatsheet</title>
+    <link href="../../style.css" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
+
+  </head>
+  <body>
+    <nav>
+<a href="../../"> HOME </a>
+<span> / </span>
+<a href="../../CV.html"> CV </a>
+<span> / </span>
+<a href="../../publickey.html"> PUBKEY </a>
+<span> / </span>
+<a href="../../mix.html"> MIX1010 </a>
+<span> / </span>
+<a href="../../tableau.html"> TABLEAU </a>
+</nav>
+
+<h1 id="haskell-stack-profiling-cheatsheet">Haskell + Stack Profiling Cheatsheet</h1>
+<p>Sometimes the Haskell programs we write don't run well. GHC provides tools for diagnosing and fixing performance issues. It is not always obvious how to use them in conjunction with the stack build system. This post is a collection of recipes for doing that.</p>
+<h3 id="heap-profiling">Heap Profiling</h3>
+<p>In the STG language (which is the final stage of Haskell compilation before assembly generation), every time a let expression is evaluated, the runtime creates a thunk on the heap. If we are not careful, this can lead to large unevaluated computations being stored on the heap and bad memory performance. Rather than staring at the OS process monitor, we can ask the Haskell runtime system to produce a heap profile which can be turned into a graph:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">stack</span> clean
+<span class="ex">stack</span> build --profile
+
+<span class="co">#move to where stack stores the binaries</span>
+<span class="bu">cd</span> ./.stack-work/install/<span class="op">&lt;</span>arch<span class="op">&gt;</span>/<span class="op">&lt;</span>hash<span class="op">&gt;</span>/<span class="op">&lt;</span>version<span class="op">&gt;</span>/bin
+
+<span class="ex">./executable</span> arg1 arg2 ... +RTS -hc -p
+<span class="ex">hp2ps</span> -c executable.hp</code></pre></div>
+<p>Here are two examples of these heap profiles:</p>
+<div class="figure">
+<img src="../../img/bad_heap_good_heap_small.jpg" />
+
+</div>
+<p>The first program demonstrates the classic Haskell space leak. It consumes more than 1GB of memory. It reads a million integers from a file, adds them up and then prints the sum. Because we never scrutinize the sum during the loop, we end up with a linked list containing the million numbers on the heap.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> <span class="kw">do</span>
+  contents <span class="ot">&lt;-</span> getContents
+  print (sumFile contents)
+  <span class="kw">where</span> sumFile <span class="fu">=</span> foldl (<span class="fu">+</span>) <span class="dv">0</span>  <span class="fu">.</span> map read <span class="fu">.</span> words</code></pre></div>
+<p>We can fix this by using <code>foldl'</code> which is strict in its accumulation argument:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">main ::</span> <span class="dt">IO</span> ()
+main <span class="fu">=</span> <span class="kw">do</span>
+  contents <span class="ot">&lt;-</span> getContents
+  print (sumFile contents)
+  <span class="kw">where</span> sumFile <span class="fu">=</span> foldl' (<span class="fu">+</span>) <span class="dv">0</span>  <span class="fu">.</span> map read <span class="fu">.</span> words</code></pre></div>
+<p>This version only uses 100kB of memory. As can be seen from the heap profile, while this program is running, the GHC runtime is furiously garbage collecting.</p>
+<h3 id="core">Core</h3>
+<p>Haskell is a large language. Sometimes you need to understand what your code is actually doing. Since Haskell doesn't map cleanly onto assembly, it has a non trivial runtime system. The assembly produced by GHC is not easy to understand unless you have a good understanding of the runtime system. Rather than reading the generated assembly or using GDB/LLVM, we can read either the intermediate Core language or the STG language. Both languages have similar semantics, but Core has the advantage that types have not been erased. We can generate the Core files as follows:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">stack</span> clean
+<span class="ex">stack</span> build --ghc-options \
+<span class="st">&quot;-ddump-simpl -ddump-to-file&quot;</span>
+
+<span class="bu">cd</span> ./.stack-work/dist/<span class="op">&lt;</span>arch<span class="op">&gt;</span>/<span class="op">&lt;</span>cabal<span class="op">&gt;</span>/build/proj-name/proj-name-tmp/src</code></pre></div>
+<p>The core files have the prefix <code>.dump-simpl</code>. The produced core files contain a large amount of information. As a first pass, it is better to use the flag <code>-dsuppress-all</code> to produce a more readable core file. Internally, GHC generates lots of new identifiers. The flag <code>-dsuppress-uniques</code> makes the identifiers match up better with the source code, but it can make binding ambiguous (which is why it isn't included in the suppress all flag)</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">stack</span> clean
+<span class="ex">stack</span> build --ghc-options \
+<span class="st">&quot;-ddump-simpl -ddump-to-file -dsuppress-all -dsuppress-uniques&quot;</span>
+
+<span class="bu">cd</span> ./.stack-work/dist/<span class="op">&lt;</span>arch<span class="op">&gt;</span>/<span class="op">&lt;</span>cabal<span class="op">&gt;</span>/build/proj-name/proj-name-tmp/src</code></pre></div>
+<p>Here are some examples:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+f x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
+
+
+<span class="fu">==========================</span> <span class="dt">Tidy</span> <span class="dt">Core</span> <span class="fu">==========================</span>
+
+<span class="co">-- RHS size: {terms: 8, types: 3, coercions: 0, joins: 0/0}</span>
+f
+f <span class="fu">=</span> \ x <span class="ot">-&gt;</span> <span class="kw">case</span> x <span class="kw">of</span> { <span class="dt">I</span><span class="fu">#</span> x1 <span class="ot">-&gt;</span> <span class="dt">I</span><span class="fu">#</span> (<span class="fu">+#</span> x1 <span class="dv">1</span><span class="fu">#</span>) }</code></pre></div>
+<p>As we expect, <code>f</code> compiles to a function with one argument that unpacks a boxed up integer and increments it by 1. Things get more interesting when we start using more exotic Haskell features:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">f ::</span> (<span class="dt">Num</span> a) <span class="ot">=&gt;</span> a <span class="ot">-&gt;</span> a
+f x <span class="fu">=</span> x <span class="fu">+</span> <span class="dv">1</span>
+
+<span class="fu">==========================</span> <span class="dt">Tidy</span> <span class="dt">Core</span> <span class="fu">==========================</span>
+
+<span class="co">-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}</span>
+f1
+f1 <span class="fu">=</span> <span class="dv">1</span>
+
+<span class="co">-- RHS size: {terms: 9, types: 7, coercions: 0, joins: 0/0}</span>
+f
+f <span class="fu">=</span> \ <span class="fu">@</span> a <span class="fu">$</span>dNum x <span class="ot">-&gt;</span> <span class="fu">+</span> <span class="fu">$</span>dNum x (fromInteger <span class="fu">$</span>dNum f1)</code></pre></div>
+<p>Now <code>f</code> compiles to a function with three arguments, the type, the class dictionary which stores all the functions declared in Num instances and the argument <code>x</code> which appears in the original Haskell code. This is how polymorphism works in Haskell under the hood and lets us understand the kind of overhead it introduces.</p>
+
+
+  </body>
+</html>
