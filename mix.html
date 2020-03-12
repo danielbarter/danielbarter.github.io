@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title> Daniel Barter - mix</title>
-    <link href="./style.css" rel="stylesheet">
-    <link href="./smoothed_noise_gifs/favicon.png" rel="icon">
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title> Daniel Barter - mix</title>
+        <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro'
+              rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro'
+              rel='stylesheet' type='text/css'>
+        <link href="./style.css" rel="stylesheet">
+        <link href="./img/favicon.png" rel="icon">
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
 
-    <script src="mix.js"></script>
-  </head>
-  <body>
-    <nav>
-<a href="./"> HOME </a>
-<span> / </span>
-<a href="./CV.html"> CV </a>
-<span> / </span>
-<a href="./publickey.html"> PUBKEY </a>
-<span> / </span>
-<a href="./mix.html"> MIX1010 </a>
-<span> / </span>
-<a href="./tableau.html"> TABLEAU </a>
-</nav>
+    </head>
+    <body>
+        <nav>
+            <a href="./index.html"> HOME </a>
+            <span> / </span>
+            <a href="./CV.html"> CV </a>
+            <span> / </span>
+            <a href="./publickey.html"> PUBKEY </a>
+            <span> / </span>
+            <a href="./mix.html"> MIX1010 </a>
+            <span> / </span>
+            <a href="./tableau.html"> TABLEAU </a>
+        </nav>
 
-<h1 id="mix-1010">MIX 1010</h1>
+
+   <h1 id="mix-1010">MIX 1010</h1>
 <p>This is a simulator for Knuth's MIX machine from the book <a href="https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming">Art of Computer Programming</a>. We use the identifier 1010 because this machine is slightly different from MIX 1009. We encode masks using binary and there is no division or multiplication instructions. A detailed readme and instruction list can be found on <a href="https://github.com/danielbarter/elm-mix">github</a>.</p>
-<div id="mix1">
-
-</div>
+<script src="./js/mix.js"></script>
+<div id="mix1"></div>
 <script>
     var node = document.getElementById('mix1');
     var app = Elm.Main.embed(node);
 </script>
 <p>Statements in the assembler language look like <strong>(:label) (/mask) (instruction) (relative address) (+index)</strong>. Instuctions in memory look like <strong>address(:label) (/mask) (instruction) (address) (+index)</strong>. Here is an example multiplication routine:</p>
-<pre class="algorithm"><code># multiplication routine
+<pre><code># multiplication routine
 :start LDA y
 JAZ end
 DECA 1
@@ -48,7 +56,7 @@ HLT
 :x 5
 :y 6</code></pre>
 <p>Here is a variant of this routine which is self modifying:</p>
-<pre class="algorithm"><code># modify the instruction located at end
+<pre><code># modify the instruction located at end
 LDA end
 INCA 7
 STA end
@@ -70,7 +78,7 @@ HLT
 :x 5
 :y 6</code></pre>
 <p>Here is an example where we loop through a zero terminated array and increment each entry by 1:</p>
-<pre class="algorithm"><code>#routine
+<pre><code>#routine
 
 :start LDA x +1
 JAZ end
@@ -90,7 +98,7 @@ JMP start
 1
 0</code></pre>
 <p>Here is an example where we compute the maximum in an array of numbers.</p>
-<pre class="algorithm"><code>ENT1 x
+<pre><code>ENT1 x
 LD2 x_length
 :loop J2Z end
 CMPA 0 +1
@@ -115,7 +123,7 @@ JMP t
 2
 10</code></pre>
 <p>Here is an example where we add up all the numbers on a stack:</p>
-<pre class="algorithm"><code># adding up all the numbers on the stack.
+<pre><code># adding up all the numbers on the stack.
 
 # we maintain the stack pointer in I6
 INC6 stack_top 
@@ -148,7 +156,7 @@ JMP 0 +1
 4
 :stack_top 5</code></pre>
 <p>We can expand this example out into a programmable stack calculator with addition and multiplication operations:</p>
-<pre class="algorithm"><code># programmable stack calculator.
+<pre><code># programmable stack calculator.
 
 # we maintain the stack pointer in I6
 INC6 stack_top 
@@ -230,7 +238,7 @@ JMP 0 +1
 #stack bottom
 :stack_top </code></pre>
 <p>here is an example where we traverse a binary tree with an integer stored at each node and increment those integers.</p>
-<pre class="algorithm"><code>ENT6 stack_top
+<pre><code>ENT6 stack_top
 :loop JMP inc_node
 LDA 0 +6
 JANZ loop
@@ -276,6 +284,5 @@ ST3 0 +6
 0
 :stack_top a</code></pre>
 
-
-  </body>
+    </body>
 </html>
