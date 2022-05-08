@@ -84,7 +84,7 @@
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            training_logger(step, function(point))</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> point</span></code></pre></div>
-<p>This is just a standard gradient descent loop. Now, if we represent a path using a sequence of points, we want to optimize the path so it slides downhill, while ensuring that the points don't move to far away from each other. This logic is encoded in the <code>action</code> which we use to weight a section of our path:</p>
+<p>This is just a standard gradient descent loop. Now, if we represent a path using a sequence of points, we want to optimize the path so it slides downhill, while ensuring that the points don't move too far away from each other. This logic is encoded in the <code>action</code> which we use to weight a section of our path:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@partial</span>(jax.jit, static_argnums<span class="op">=</span>[<span class="dv">0</span>])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> action(function, left_point, right_point, distance_factor):</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
