@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title> Daniel Barter - clifford</title>
+        <link href="./style.css" rel="stylesheet">
+        <link href="./img/favicon.png" rel="icon">
+        <script async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+    <body>
+        <nav id="navbar">
+            <a href="./index.html"> HOME </a>
+            <span> / </span>
+            <a href="./CV.html"> CV </a>
+            <span> / </span>
+            <a href="https://github.com/danielbarter"> GITHUB </a>
+            <span> / </span>
+            <a href="./publickey.html"> PUBKEY </a>
+            <span> / </span>
+            <a href="./mix.html"> MIX1010 </a>
+            <span> / </span>
+            <a href="./tableau.html"> TABLEAU </a>
+            <span> / </span>
+            <a href="./noise.html"> NOISE </a>
+            <span> / </span>
+            <a href="./saddles.html"> SADDLES </a>
+        </nav>
+
+
+   <h1 id="simulating-clifford-circuits">Simulating Clifford Circuits</h1>
+<p>The <a href="https://en.wikipedia.org/wiki/Gottesman%E2%80%93Knill_theorem">Gottesman-Knill theorem</a> states that Clifford circuits can be simulated in polynomial time on a classical computer. It is a cornerstone of quantum computing, because many interesting quantum error correcting codes can be implemented using Clifford circuits. Recently, I have been contributing to and using <a href="https://github.com/quantumlib/Stim">Stim</a>, a high performance Clifford circuit simulator. The proof of the Gottesman-Knill theorem is important when implementing a simulator. This page is my notes on the proof so I don't need to go searching through books and papers to find the details.</p>
+<h3 id="notation">Notation</h3>
+<p>We are going to focus on an <span class="math inline">\(n\)</span> qubit system. Our state space is <span class="math inline">\(H = \left( \mathbb{C}^2 \right)^{\otimes n}\)</span>. We define the <a href="https://en.wikipedia.org/wiki/Pauli_matrices">Pauli operators</a> as follows: <span class="math display">\[
+I = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{pmatrix} \quad
+X = \begin{pmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{pmatrix} \quad
+Y = \begin{pmatrix} 0 &amp; -i \\ i &amp; 0 \end{pmatrix} \quad
+Z = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; -1 \end{pmatrix}
+\]</span> The Pauli operators satisfy the following relations: <span class="math display">\[
+XZ = - ZX \quad
+XZ = -iY
+\]</span> The <span class="math inline">\(n\)</span> qubit <strong>Pauli group</strong> is defined as <span class="math display">\[
+P_n = \left\{ \alpha p_1 \otimes \cdots \otimes p_n \; | \; \alpha = 1, -1, i, -i \quad p_j = I,X,Y,Z \right\} \subset U(H)
+\]</span> It has <span class="math inline">\(4 \cdot 2^n \cdot 2^n\)</span> elements. If we fix <span class="math inline">\(\alpha = 1\)</span>, then the remaining <span class="math inline">\(2^n \cdot 2^n\)</span> elements are a basis of <span class="math inline">\(U(H)\)</span>. This will be important later. The <span class="math inline">\(n\)</span> qubit <strong>clifford group</strong> <span class="math inline">\(C_n\)</span> is defined as the normalizer of <span class="math inline">\(P_n\)</span> inside <span class="math inline">\(U(H)\)</span>.</p>
+<h3 id="structure-of-the-clifford-group">Structure of the Clifford Group</h3>
+<p>Before we get into the physics, we need to understand the structure of the Clifford group. Let <span class="math inline">\({\rm Aut}_{\mathbb{C}}(P_n)\)</span> be the automorphisms of <span class="math inline">\(P_n\)</span> that intertwine the <span class="math inline">\(\mathbb{C}\)</span>-action. We are explicitly excluding complex conjugation. There is a natural map <span class="math inline">\(C_n \to {\rm Aut}_{\mathbb{C}}(P_n)\)</span> defined by <span class="math inline">\(c \cdot p = c p c^{-1}\)</span> inside <span class="math inline">\(U(H)\)</span>.</p>
+
+    </body>
+</html>
