@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <title> Daniel Barter - tableau</title>
-        <link href="./style.css" rel="stylesheet">
-        <link href="./img/favicon.png" rel="icon">
-        <script async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    </head>
-    <body>
-        <nav id="navbar">
-            <a href="./index.html"> HOME </a>
-            <span> / </span>
-            <a href="./CV.html"> CV </a>
-            <span> / </span>
-            <a href="https://github.com/danielbarter"> GITHUB </a>
-            <span> / </span>
-            <a href="./publickey.html"> PUBKEY </a>
-            <span> / </span>
-            <a href="./mix.html"> MIX1010 </a>
-            <span> / </span>
-            <a href="./tableau.html"> TABLEAU </a>
-            <span> / </span>
-            <a href="./noise.html"> NOISE </a>
-            <span> / </span>
-            <a href="./saddles.html"> SADDLES </a>
-        </nav>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title> Daniel Barter - tableau</title>
+    <link href="./style.css" rel="stylesheet">
+    <link href="./img/favicon.png" rel="icon">
+    <script async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+  <body>
+    <nav id="navbar">
+      <a href="./index.html"> HOME </a>
+      <span> / </span>
+      <a href="./CV.html"> CV </a>
+      <span> / </span>
+      <a href="https://github.com/danielbarter"> GITHUB </a>
+      <span> / </span>
+      <a href="./publickey.html"> PUBKEY </a>
+      <span> / </span>
+      <a href="./mix.html"> MIX1010 </a>
+      <span> / </span>
+      <a href="./tableau.html"> TABLEAU </a>
+      <span> / </span>
+      <a href="./noise.html"> NOISE </a>
+      <span> / </span>
+      <a href="./saddles.html"> SADDLES </a>
+    </nav>
 
-
-   <h1 id="tableau">Tableau</h1>
+    <h1 id="tableau">Tableau</h1>
 <p>This is a small game I wrote to demonstrate some of the combinatorics which appears when you study the representation theory of the symmetric group. First you need to choose a weakly decreasing sequence of positive numbers for example <code>4 3 2</code> or <code>5 4 4 1</code>. In representation theory, we call this a <strong>partition</strong>. You will be presented with a configuration which looks like:</p>
 <p><div><div style="background-color: rgb(173, 127, 168); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">1</div><div style="background-color: rgb(173, 127, 168); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">2</div><div style="background-color: rgb(173, 127, 168); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">3</div><div style="background-color: rgb(114, 159, 207); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">4</div></div><div><div style="background-color: rgb(114, 159, 207); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">5</div><div style="background-color: rgb(114, 159, 207); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">6</div><div style="background-color: rgb(138, 226, 52); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">7</div></div><div><div style="background-color: rgb(138, 226, 52); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">8</div><div style="background-color: rgb(255, 233, 79); display: inline-block; padding: 10px; border-radius: 10px; border-style: solid; border-color: rgb(215,215,215); font-family: monospace; font-size: 20px; width: 50px; text-align: center; user-select: none; cursor: default;">9</div></div></p>
 <p>Notice that the numbers increase by 1 as you go along the rows. The aim of the game is to transform the configuration so that the numbers increase by 1 along the columns:</p>
@@ -45,5 +44,5 @@
     var app = Elm.Main.embed(node);
 </script>
 
-    </body>
+  </body>
 </html>
