@@ -37,16 +37,24 @@
     </nav>
 
     <h1 id="mix-1010">MIX 1010</h1>
-<p>This is a simulator for Knuth's MIX machine from the book <a href="https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming">Art of Computer Programming</a>. We use the identifier 1010 because this machine is slightly different from MIX 1009. We encode masks using binary and there is no division or multiplication instructions. A detailed readme and instruction list can be found on <a href="https://github.com/danielbarter/elm-mix">github</a>.</p>
+<p>This is a simulator for Knuth's MIX machine from the book <a
+href="https://en.wikipedia.org/wiki/The_Art_of_Computer_Programming">Art
+of Computer Programming</a>. We use the identifier 1010 because this
+machine is slightly different from MIX 1009. We encode masks using
+binary and there is no division or multiplication instructions. A
+detailed readme and instruction list can be found on <a
+href="https://github.com/danielbarter/elm-mix">github</a>.</p>
 <script src="./js/mix.js"></script>
-<div id="mix1">
-
-</div>
+<div id="mix1"></div>
 <script>
     var node = document.getElementById('mix1');
     var app = Elm.Main.embed(node);
 </script>
-<p>Statements in the assembler language look like <strong>(:label) (/mask) (instruction) (relative address) (+index)</strong>. Instuctions in memory look like <strong>address(:label) (/mask) (instruction) (address) (+index)</strong>. Here is an example multiplication routine:</p>
+<p>Statements in the assembler language look like <strong>(:label)
+(/mask) (instruction) (relative address) (+index)</strong>. Instuctions
+in memory look like <strong>address(:label) (/mask) (instruction)
+(address) (+index)</strong>. Here is an example multiplication
+routine:</p>
 <pre><code># multiplication routine
 :start LDA y
 JAZ end
@@ -85,7 +93,8 @@ HLT
 :s 0
 :x 5
 :y 6</code></pre>
-<p>Here is an example where we loop through a zero terminated array and increment each entry by 1:</p>
+<p>Here is an example where we loop through a zero terminated array and
+increment each entry by 1:</p>
 <pre><code>#routine
 
 :start LDA x +1
@@ -105,7 +114,8 @@ JMP start
 4
 1
 0</code></pre>
-<p>Here is an example where we compute the maximum in an array of numbers.</p>
+<p>Here is an example where we compute the maximum in an array of
+numbers.</p>
 <pre><code>ENT1 x
 LD2 x_length
 :loop J2Z end
@@ -163,7 +173,8 @@ JMP 0 +1
 8
 4
 :stack_top 5</code></pre>
-<p>We can expand this example out into a programmable stack calculator with addition and multiplication operations:</p>
+<p>We can expand this example out into a programmable stack calculator
+with addition and multiplication operations:</p>
 <pre><code># programmable stack calculator.
 
 # we maintain the stack pointer in I6
@@ -245,7 +256,8 @@ JMP 0 +1
 
 #stack bottom
 :stack_top </code></pre>
-<p>here is an example where we traverse a binary tree with an integer stored at each node and increment those integers.</p>
+<p>here is an example where we traverse a binary tree with an integer
+stored at each node and increment those integers.</p>
 <pre><code>ENT6 stack_top
 :loop JMP inc_node
 LDA 0 +6
